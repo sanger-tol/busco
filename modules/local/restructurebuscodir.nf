@@ -8,7 +8,7 @@ process RESTRUCTUREBUSCODIR {
         'nf-core/ubuntu:20.04' }"
 
     input:
-    tuple val(meta), val(lineage), path(batch_summary), path(short_summary_txt), path(short_summary_json), path(full_table), path(missing_busco_list), path(hmmer_output)
+    tuple val(meta), val(lineage), path(batch_summary), path(short_summary_txt), path(short_summary_json), path(full_table), path(missing_busco_list), path(hmmer_output), path(miniprot_output)
 
     output:
     tuple val(meta), path("${lineage}"), emit: clean_busco_dir
@@ -31,6 +31,7 @@ process RESTRUCTUREBUSCODIR {
     [ -e "${missing_busco_list}" ] && cp ${missing_busco_list} ${lineage}/
 
     tar czf ${lineage}/hmmer_output.tar.gz --exclude=.checkpoint -C \$(dirname ${hmmer_output}) \$(basename ${hmmer_output})
+    tar czf ${lineage}/miniprot_output.tar.gz --exclude=ref.mpi -C \$(dirname ${miniprot_output}) \$(basename ${miniprot_output})
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -98,7 +98,8 @@ workflow BUSCO {
                     outputs.short_summaries_json ?: [],
                     outputs.full_table ?: [],
                     outputs.missing_busco_list ?: [],
-                    outputs.busco_dir ? "${outputs.busco_dir}/hmmer_output" : []
+                    outputs.busco_dir ? "${outputs.busco_dir}/hmmer_output" : [],
+                    outputs.busco_dir ? "${outputs.busco_dir}/miniprot_output" : [],
                 ]
             }
     )
