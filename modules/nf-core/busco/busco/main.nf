@@ -1,5 +1,6 @@
 process BUSCO_BUSCO {
-    tag "${meta.id}_${lineage}"
+    tag "${meta.id}"
+    label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
@@ -50,7 +51,7 @@ process BUSCO_BUSCO {
     def busco_lineage = lineage in ['auto', 'auto_prok', 'auto_euk']
         ? lineage.replaceFirst('auto', '--auto-lineage').replaceAll('_', '-')
         : "--lineage_dataset ${lineage}"
-    def busco_lineage_dir = busco_lineages_path ? "--download_path ${busco_lineages_path} --offline" : ''
+    def busco_lineage_dir = busco_lineages_path ? "--download_path ${busco_lineages_path}" : ''
     def intermediate_files = [
         './*-busco/*/auto_lineage',
         './*-busco/*/**/{miniprot,hmmer,.bbtools}_output',
@@ -111,13 +112,8 @@ process BUSCO_BUSCO {
 
     if grep 'Run failed; check logs' ${prefix}-busco.batch_summary.txt > /dev/null
     then
-        if grep -Fx 'Sequence too long (max 32000000 permitted).' ${prefix}-busco.log > /dev/null
-        then
-            echo "Prodigal can't run on this genome. Skipping it"
-        else
-            echo "Busco run failed"
-            exit 1
-        fi
+        echo "Busco run failed"
+        exit 1
     fi
 
     cat <<-END_VERSIONS > versions.yml
