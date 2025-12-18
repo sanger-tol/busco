@@ -1,5 +1,5 @@
 process RESTRUCTUREBUSCODIR {
-    tag "${meta.id}_${lineage}"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
@@ -8,11 +8,12 @@ process RESTRUCTUREBUSCODIR {
         'nf-core/ubuntu:20.04' }"
 
     input:
-    tuple val(meta), val(lineage), path(batch_summary), path(short_summary_txt), path(short_summary_json), path(full_table), path(missing_busco_list), path(hmmer_output), path(miniprot_output)
+    tuple val(meta), path(busco_dir)
+    val lineage
 
     output:
-    tuple val(meta), path("${lineage}"), emit: clean_busco_dir
-    path "versions.yml"                , emit: versions
+    tuple val(meta), path("${lineage}/*"), emit: files
+    path "versions.yml"                  , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,17 +22,20 @@ process RESTRUCTUREBUSCODIR {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+
     mkdir -p ${lineage}
-
-    [ -n "${batch_summary}" ] && cp --dereference ${batch_summary} ${lineage}/short_summary.tsv
-    [ -n "${short_summary_txt}" ] && cp --dereference ${short_summary_txt} ${lineage}/short_summary.txt
-    [ -n "${short_summary_json}" ] && cp --dereference ${short_summary_json} ${lineage}/short_summary.json
-
-    [ -e "${full_table}" ] && cp ${full_table} ${lineage}/
-    [ -e "${missing_busco_list}" ] && cp ${missing_busco_list} ${lineage}/
-
-    tar czf ${lineage}/hmmer_output.tar.gz --exclude=.checkpoint -C \$(dirname ${hmmer_output}) \$(basename ${hmmer_output})
-    tar czf ${lineage}/miniprot_output.tar.gz --exclude=ref.mpi -C \$(dirname ${miniprot_output}) \$(basename ${miniprot_output})
+    for i in busco_sequences/fragmented_busco_sequences busco_sequences/multi_copy_busco_sequences busco_sequences/single_copy_busco_sequences hmmer_output miniprot_output
+    do
+        if [[ -d ${busco_dir}/\$i ]]
+        then
+            tar czf ${lineage}/\$(basename \${i}).tar.gz --exclude=.checkpoint -C ${busco_dir}/\$i .
+        fi
+    done
+    for i in ${busco_dir}/*
+    do
+        ln -s ../\$i ${lineage}/
+    done
+    rm -f ${lineage}/*_output
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

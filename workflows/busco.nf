@@ -64,44 +64,12 @@ workflow BUSCO {
     )
     ch_versions = ch_versions.mix ( BUSCO_BUSCO.out.versions.first() )
 
-    ch_all_busco_outputs = BUSCO_BUSCO.out.batch_summary
-        .join(BUSCO_BUSCO.out.short_summaries_txt, by: 0, remainder: true )
-        .join(BUSCO_BUSCO.out.short_summaries_json, by: 0, remainder: true )
-        .join(BUSCO_BUSCO.out.full_table, by: 0, remainder: true )
-        .join(BUSCO_BUSCO.out.missing_busco_list, by: 0, remainder: true )
-        .join(BUSCO_BUSCO.out.busco_dir, by: 0)
-        .map { meta, batch_summary, short_summaries_txt, short_summaries_json, full_table, missing_busco_list, busco_dir ->
-            [
-                meta,
-                [
-                    batch_summary: batch_summary,
-                    short_summaries_txt: short_summaries_txt,
-                    short_summaries_json: short_summaries_json,
-                    full_table: full_table,
-                    missing_busco_list: missing_busco_list,
-                    busco_dir: busco_dir,
-                ]
-            ]
-        }
-
     //
     // MODULE: Tidy up the BUSCO output directories before publication
     //
     RESTRUCTUREBUSCODIR(
-        ch_all_busco_outputs
-            .map { meta, outputs ->
-                [
-                    meta,
-                    params.lineage,
-                    outputs.batch_summary ?: [],
-                    outputs.short_summaries_txt ?: [],
-                    outputs.short_summaries_json ?: [],
-                    outputs.full_table ?: [],
-                    outputs.missing_busco_list ?: [],
-                    outputs.busco_dir ? "${outputs.busco_dir}/hmmer_output" : [],
-                    outputs.busco_dir ? "${outputs.busco_dir}/miniprot_output" : [],
-                ]
-            }
+        BUSCO_BUSCO.out.busco_dir,
+        params.lineage,
     )
     ch_versions = ch_versions.mix ( RESTRUCTUREBUSCODIR.out.versions.first() )
 
