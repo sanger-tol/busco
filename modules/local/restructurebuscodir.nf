@@ -9,7 +9,6 @@ process RESTRUCTUREBUSCODIR {
 
     input:
     tuple val(meta), path(busco_dir)
-    val lineage
 
     output:
     tuple val(meta), path("${lineage}/*"), emit: files
@@ -21,6 +20,7 @@ process RESTRUCTUREBUSCODIR {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    lineage = meta.lineage
     """
 
     mkdir -p ${lineage}

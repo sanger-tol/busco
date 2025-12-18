@@ -13,6 +13,16 @@
                 "exists": true,
                 "pattern": "^([\\S\\s]*\\/)?[^\\s\\/]+\\.f(ast)?a\\.gz$",
                 "errorMessage": "Genome FastA file must be provided, cannot contain spaces and must have extension '.fa.gz' or '.fasta.gz'"
+            },
+            "lineage": {
+                "type": "string",
+                "pattern": "_odb(10|12)$",
+                "description": "Name of the ODB lineage to run BUSCO on. The pipeline defaults to the global --lineage parameter."
+            },
+            "outdir": {
+                "type": "string",
+                "pattern": "^\\S+$",
+                "errorMessage": "Output directory for this assembly. Per-lineage sub-directories will be created under it. The pipeline defaults to the global --outdir parameter."
             }
         },
         "required": ["fasta"]
