@@ -1,11 +1,10 @@
 process BUSCO_BUSCO {
     tag "${meta.id}"
-    label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/41/4137d65ab5b90d2ae4fa9d3e0e8294ddccc287e53ca653bb3c63b8fdb03e882f/data'
-        : 'community.wave.seqera.io/library/busco:6.0.0--a9a1426105f81165'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/64/6456c1880785adefb4fc9b480bb7662479d5662c17f70d5e8715b7f2a63ee28b/data'
+        : 'community.wave.seqera.io/library/busco_numpy:b66937518a305dd7'}"
     // Note: one test had to be disabled when switching to Busco 6.0.0, cf https://github.com/nf-core/modules/pull/8781/files
     // Try to restore it when upgrading Busco to a later version
 
@@ -22,9 +21,20 @@ process BUSCO_BUSCO {
     val clean_intermediates
 
     output:
-    tuple val(meta), path("*-busco/*/run_*"), emit: busco_dir
-
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*-busco.batch_summary.txt"), emit: batch_summary
+    tuple val(meta), path("short_summary.*.txt"), emit: short_summaries_txt, optional: true
+    tuple val(meta), path("short_summary.*.json"), emit: short_summaries_json, optional: true
+    tuple val(meta), path("*-busco.log"), emit: log, optional: true
+    tuple val(meta), path("*-busco/*/run_*/full_table.tsv"), emit: full_table, optional: true
+    tuple val(meta), path("*-busco/*/run_*/missing_busco_list.tsv"), emit: missing_busco_list, optional: true
+    tuple val(meta), path("*-busco/*/run_*/single_copy_proteins.faa"), emit: single_copy_proteins, optional: true
+    tuple val(meta), path("*-busco/*/run_*/busco_sequences"), emit: seq_dir, optional: true
+    tuple val(meta), path("*-busco/*/translated_proteins"), emit: translated_dir, optional: true
+    tuple val(meta), path("*-busco"), emit: busco_dir
+    tuple val(meta), path("busco_downloads/lineages/*"), emit: downloaded_lineages, optional: true
+    tuple val(meta), path("*-busco/*/run_*/busco_sequences/single_copy_busco_sequences/*.faa"), emit: single_copy_faa, optional: true
+    tuple val(meta), path("*-busco/*/run_*/busco_sequences/single_copy_busco_sequences/*.fna"), emit: single_copy_fna, optional: true
+    tuple val("${task.process}"), val('busco'), eval("busco --version 2> /dev/null | sed 's/BUSCO //g'"), emit: versions_busco, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -39,7 +49,7 @@ process BUSCO_BUSCO {
     def busco_lineage = lineage in ['auto', 'auto_prok', 'auto_euk']
         ? lineage.replaceFirst('auto', '--auto-lineage').replaceAll('_', '-')
         : "--lineage_dataset ${lineage}"
-    def busco_lineage_dir = busco_lineages_path ? "--download_path ${busco_lineages_path}" : ''
+    def busco_lineage_dir = busco_lineages_path ? "--download_path ${busco_lineages_path} --offline" : ''
     def intermediate_files = [
         './*-busco/*/auto_lineage',
         './*-busco/*/**/{miniprot,hmmer,.bbtools}_output',
@@ -93,16 +103,21 @@ process BUSCO_BUSCO {
     # find and remove broken symlinks from the cleanup
     find . -xtype l -delete
 
+    # Move files to avoid staging/publishing issues
+    mv ${prefix}-busco/batch_summary.txt ${prefix}-busco.batch_summary.txt
+    mv ${prefix}-busco/*/short_summary.*.{json,txt} . || echo "Short summaries were not available: No genes were found."
+    mv ${prefix}-busco/logs/busco.log ${prefix}-busco.log
+
     if grep 'Run failed; check logs' ${prefix}-busco.batch_summary.txt > /dev/null
     then
-        echo "Busco run failed"
-        exit 1
+        if grep -Fx 'Sequence too long (max 32000000 permitted).' ${prefix}-busco.log > /dev/null
+        then
+            echo "Prodigal can't run on this genome. Skipping it"
+        else
+            echo "Busco run failed"
+            exit 1
+        fi
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        busco: \$( busco --version 2> /dev/null | sed 's/BUSCO //g' )
-    END_VERSIONS
     """
 
     stub:
@@ -111,10 +126,5 @@ process BUSCO_BUSCO {
     """
     touch ${prefix}-busco.batch_summary.txt
     mkdir -p ${prefix}-busco/${fasta_name}/run_${lineage}/busco_sequences
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        busco: \$( busco --version 2> /dev/null | sed 's/BUSCO //g' )
-    END_VERSIONS
     """
 }

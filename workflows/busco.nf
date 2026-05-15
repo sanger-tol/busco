@@ -62,7 +62,6 @@ workflow BUSCO {
         [],
         []
     )
-    ch_versions = ch_versions.mix ( BUSCO_BUSCO.out.versions.first() )
 
     //
     // MODULE: Tidy up the BUSCO output directories before publication
