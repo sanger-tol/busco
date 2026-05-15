@@ -5,7 +5,7 @@
 */
 include { GUNZIP                 } from '../modules/nf-core/gunzip/main'
 include { BUSCO_BUSCO            } from '../modules/nf-core/busco/busco/main'
-include { RESTRUCTUREBUSCODIR    } from '../modules/local/restructurebuscodir'
+include { RESTRUCTUREBUSCODIR    } from '../modules/sanger-tol/restructurebuscodir/main'
 include { MULTIQC                } from '../modules/nf-core/multiqc/main'
 include { paramsSummaryMap       } from 'plugin/nf-schema'
 include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
@@ -63,13 +63,25 @@ workflow BUSCO {
         []
     )
 
+
     //
     // MODULE: Tidy up the BUSCO output directories before publication
     //
+
+    busco_out_to_restructure = BUSCO_BUSCO.out.batch_summary
+        .combine( ch_genome.map { meta, fasta -> meta.lineage } )
+        .join(BUSCO_BUSCO.out.short_summaries_txt, remainder: true)
+        .join(BUSCO_BUSCO.out.short_summaries_json, remainder: true)
+        .join(BUSCO_BUSCO.out.full_table, remainder: true)
+        .join(BUSCO_BUSCO.out.missing_busco_list, remainder: true)
+        .join(BUSCO_BUSCO.out.seq_dir)
+        .map { meta, batch_summary, lineage, short_summaries_txt, short_summaries_json, full_table, missing_busco_list, busco_dir ->
+            [meta, lineage, batch_summary, short_summaries_txt ?: [], short_summaries_json ?: [], full_table ?: [], missing_busco_list ?: [], busco_dir]
+        }
+
     RESTRUCTUREBUSCODIR(
-        BUSCO_BUSCO.out.busco_dir,
+        busco_out_to_restructure,
     )
-    ch_versions = ch_versions.mix ( RESTRUCTUREBUSCODIR.out.versions.first() )
 
     //
     // Collate and save software versions
