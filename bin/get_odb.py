@@ -8,7 +8,7 @@ import requests
 import re
 
 
-NCBI_TAXONOMY_API = "https://api.ncbi.nlm.nih.gov/datasets/v1/taxonomy/taxon/%s"
+NCBI_TAXONOMY_API = "https://api.ncbi.nlm.nih.gov/datasets/v2/taxonomy/taxon/%s"
 
 
 def parse_args(args=None):
@@ -18,7 +18,7 @@ def parse_args(args=None):
     parser.add_argument("NCBI_SUMMARY_JSON", help="NCBI entry for this assembly for this assembly (in JSON).")
     parser.add_argument("LINEAGE_TAX_IDS", help="Mapping between BUSCO lineages and taxon IDs.")
     parser.add_argument("FILE_OUT", help="Output CSV file.")
-    parser.add_argument("--version", action="version", version="%(prog)s 1.1")
+    parser.add_argument("--version", action="version", version="%(prog)s 1.2")
     return parser.parse_args(args)
 
 
