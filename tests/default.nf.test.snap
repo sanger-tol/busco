@@ -1,0 +1,45 @@
+{
+    "-profile test": {
+        "content": [
+            {
+                "BUSCO_BUSCO": {
+                    "busco": "6.0.0"
+                },
+                "GUNZIP": {
+                    "gunzip": 1.13
+                },
+                "RESTRUCTUREBUSCODIR": {
+                    "restructurebuscodir": 1.0
+                },
+                "Workflow": {
+                    "sanger-tol/busco": "v0.9.0"
+                }
+            },
+            [
+                "GCA_963859965.1.fasta",
+                "GCA_963859965.1.fasta/lepidoptera_odb12",
+                "GCA_963859965.1.fasta/lepidoptera_odb12/GCA_963859965.1.fasta.fragmented_busco_sequences.tar.gz",
+                "GCA_963859965.1.fasta/lepidoptera_odb12/GCA_963859965.1.fasta.full_table.tsv",
+                "GCA_963859965.1.fasta/lepidoptera_odb12/GCA_963859965.1.fasta.missing_busco_list.tsv",
+                "GCA_963859965.1.fasta/lepidoptera_odb12/GCA_963859965.1.fasta.multi_copy_busco_sequences.tar.gz",
+                "GCA_963859965.1.fasta/lepidoptera_odb12/GCA_963859965.1.fasta.short_summary.json",
+                "GCA_963859965.1.fasta/lepidoptera_odb12/GCA_963859965.1.fasta.short_summary.tsv",
+                "GCA_963859965.1.fasta/lepidoptera_odb12/GCA_963859965.1.fasta.short_summary.txt",
+                "GCA_963859965.1.fasta/lepidoptera_odb12/GCA_963859965.1.fasta.single_copy_busco_sequences.tar.gz",
+                "multiqc_report.html",
+                "pipeline_info",
+                "pipeline_info/busco_software_mqc_versions.yml"
+            ],
+            [
+                "GCA_963859965.1.fasta.full_table.tsv:md5,f6fc3eb53ce3f94520c293bfae2f256d",
+                "GCA_963859965.1.fasta.missing_busco_list.tsv:md5,7907b15451b96b0da834f1f48e214ec4",
+                "GCA_963859965.1.fasta.short_summary.tsv:md5,7b96a07d83d720fb7c61a0d468c3afb2"
+            ]
+        ],
+        "timestamp": "2026-05-16T12:11:43.436015597",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.2"
+        }
+    }
+}
