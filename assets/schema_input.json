@@ -10,9 +10,8 @@
             "fasta": {
                 "type": "string",
                 "format": "file-path",
-                "exists": true,
-                "pattern": "^([\\S\\s]*\\/)?[^\\s\\/]+\\.f(ast)?a(\\.gz)?$",
-                "errorMessage": "Genome FastA file must be provided, cannot contain spaces and must have extension '.fa.gz' or '.fasta.gz'"
+                "pattern": "^\\S+$",
+                "errorMessage": "Assembly path is mandatory and must not contain whitespace"
             },
             "lineage": {
                 "type": "string",
