@@ -26,20 +26,18 @@
 
 ## Introduction
 
-**nf-core/busco** is a bioinformatics pipeline that ...
+**nf-core/busco** is a bioinformatics pipeline that runs the BUSCO pipeline as individual tasks in Nextflow.
+Its purpose is to distribute those tasks across compute nodes on a HPC and scale better to large genomes
+than the monolithic BUSCO.
 
-<!-- TODO nf-core:
-   Complete this sentence with a 2-3 sentence summary of what types of data the pipeline ingests, a brief overview of the
-   major pipeline sections and the types of output it produces. You're giving an overview to someone new
-   to nf-core here, in 15-20 seconds. For an example, see https://github.com/nf-core/rnaseq/blob/master/README.md#introduction
--->
+1. Identify the most relevant BUSCO lineage for the taxon of interest
+2. Run BBTools
+3. Run Miniprot
+4. Run HMMER
 
-<!-- TODO nf-core: Include a figure that guides the user through the major workflow steps. Many nf-core
-     workflows use the "tube map" design for that. See https://nf-co.re/docs/contributing/design_guidelines#examples for examples.   -->
-<!-- TODO nf-core: Fill in short bullet-pointed list of the default steps in the pipeline -->
-
-1. Read QC ([`FastQC`](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/))
-2. Present QC for raw reads ([`MultiQC`](http://multiqc.info/))
+> [!WARNING]
+> This pipeline is still in development. Documentation is still missing.
+> To run the pipeline, refer to the test profile and adjust to your own data.
 
 ## Usage
 

@@ -41,7 +41,7 @@ include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_busc
 //
 // WORKFLOW: Run main analysis pipeline depending on type of input
 //
-workflow NFCORE_BUSCO {
+workflow SANGERTOL_BUSCO {
 
     take:
     fasta                   // channel: fasta
@@ -88,7 +88,7 @@ workflow {
     //
     // WORKFLOW: Run main workflow
     //
-    NFCORE_BUSCO (
+    SANGERTOL_BUSCO (
         PIPELINE_INITIALISATION.out.fasta,
         PIPELINE_INITIALISATION.out.lineage_tax_ids,
         PIPELINE_INITIALISATION.out.lineage_db
