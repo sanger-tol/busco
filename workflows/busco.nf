@@ -41,7 +41,6 @@ workflow BUSCO {
     // MODULE: Decompress compressed FASTA files
     //
     GUNZIP ( ch_genomes_for_gunzip.gunzip )
-    ch_versions = ch_versions.mix ( GUNZIP.out.versions.first() )
 
     //
     // LOGIC: Extract the genome size for decision making downstream
