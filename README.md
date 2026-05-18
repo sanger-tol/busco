@@ -1,7 +1,7 @@
 <h1>
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/images/nf-core-busco_logo_dark.png">
-    <img alt="sanger-tol/busco" src="docs/images/nf-core-busco_logo_light.png">
+    <source media="(prefers-color-scheme: dark)" srcset="docs/images/sanger-tol-busco_logo_dark.png">
+    <img alt="sanger-tol/busco" src="docs/images/sanger-tol-busco_logo_light.png">
   </picture>
 </h1>
 
