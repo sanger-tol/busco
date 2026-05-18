@@ -1,0 +1,34 @@
+authors:
+  - affiliation: Wellcome Sanger Institute
+    email: tc25@sanger.ac.uk
+    family-names: Chafin
+    given-names: Tyler
+    orcid: https://orcid.org/0000-0001-8687-5905
+    website: https://github.com/tkchafin
+  - affiliation: Wellcome Sanger Institute
+    email: zcempjd@ucl.ac.uk
+    family-names: Dockrill
+    given-names: Peter
+    website: https://github.com/PeteDockrill
+  - affiliation: Wellcome Sanger Institute
+    email: mm49@sanger.ac.uk
+    family-names: Muffato
+    given-names: Matthieu
+    orcid: https://orcid.org/0000-0002-7860-3560
+    website: https://github.com/muffato
+  - affiliation: Wellcome Sanger Institute
+    email: axel.rodriguezperez@comunidad.unam.mx
+    family-names: Rodriguez
+    given-names: Axel
+    orcid: https://orcid.org/0009-0007-9785-2937
+    website: https://github.com/errepeAxel
+cff-version: 1.2.0
+date-released: "2026-05-18"
+license: MIT
+message: If you use this software, please cite it using the metadata from this file
+  and all references from CITATIONS.md .
+repository-code: https://github.com/sanger-tol/busco
+title: sanger-tol/busco v0.1.0 - Cambridgeshire [2026-05-18]
+type: software
+url: https://pipelines.tol.sanger.ac.uk/busco
+version: 0.1.0
