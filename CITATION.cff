@@ -24,6 +24,7 @@ authors:
     website: https://github.com/errepeAxel
 cff-version: 1.2.0
 date-released: "2026-05-18"
+doi: 10.5281/zenodo.20275259
 license: MIT
 message: If you use this software, please cite it using the metadata from this file
   and all references from CITATIONS.md .
