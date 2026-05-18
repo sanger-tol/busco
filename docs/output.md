@@ -1,4 +1,4 @@
-# nf-core/busco: Output
+# sanger-tol/busco: Output
 
 ## Introduction
 

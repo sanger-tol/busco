@@ -10,7 +10,7 @@ on:
 jobs:
   run-platform:
     name: Run AWS full tests
-    if: github.repository == 'nf-core/busco'
+    if: github.repository == 'sanger-tol/busco'
     runs-on: ubuntu-latest
     steps:
       - name: Launch workflow via Seqera Platform

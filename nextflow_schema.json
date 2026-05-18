@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema",
-    "$id": "https://raw.githubusercontent.com/nf-core/busco/master/nextflow_schema.json",
-    "title": "nf-core/busco pipeline parameters",
+    "$id": "https://raw.githubusercontent.com/sanger-tol/busco/master/nextflow_schema.json",
+    "title": "sanger-tol/busco pipeline parameters",
     "description": "BUSCO in NextFlow",
     "type": "object",
     "definitions": {

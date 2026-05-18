@@ -1,6 +1,6 @@
 {
-    "name": "nf-core/busco",
-    "homePage": "https://github.com/nf-core/busco",
+    "name": "sanger-tol/busco",
+    "homePage": "https://github.com/sanger-tol/busco",
     "repos": {
         "https://github.com/nf-core/modules.git": {
             "modules": {
