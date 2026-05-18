@@ -85,11 +85,16 @@ For more details about the output files and reports, please refer to the
 
 ## Credits
 
-sanger-tol/busco was originally written by Tyler Chafin.
+sanger-tol/busco was originally written by Tyler Chafin during the
+[Cambridge BioHackathon 2024](https://www.c2d3.cam.ac.uk/events/2024-biohackathon)
+with the participation of:
 
-We thank the following people for their extensive assistance in the development of this pipeline:
+- [Pete Dockrill **@PeteDockrill**](https://github.com/PeteDockrill)
+- [Axel Rodriguez **@errepeAxel**](https://github.com/errepeAxel)
 
-<!-- TODO nf-core: If applicable, make list of people who have also contributed -->
+[Matthieu Muffato **@muffato**](https://github.com/muffato) then
+updated the pipeline for release under the [sanger-tol](https://github.com/sanger-tol)
+umbrella organisation.
 
 ## Contributions and Support
 
