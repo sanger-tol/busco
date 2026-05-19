@@ -27,9 +27,9 @@ date-released: "2026-05-18"
 doi: 10.5281/zenodo.20275259
 license: MIT
 message: If you use this software, please cite it using the metadata from this file
-  and all references from CITATIONS.md .
+  and all references from CITATIONS.md.
 repository-code: https://github.com/sanger-tol/busco
-title: sanger-tol/busco v0.1.0 - Cambridgeshire [2026-05-18]
+title: sanger-tol/busco v0.1.0 - Cambridgeshire
 type: software
 url: https://pipelines.tol.sanger.ac.uk/busco
 version: 0.1.0
