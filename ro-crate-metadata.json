@@ -149,10 +149,10 @@
             },
             "url": [
                 "https://github.com/sanger-tol/busco",
-                "https://nf-co.re/sanger-tol/busco/0.9.0/"
+                "https://nf-co.re/sanger-tol/busco/0.2.0/"
             ],
             "version": [
-                "0.9.0"
+                "0.2.0"
             ]
         },
         {
