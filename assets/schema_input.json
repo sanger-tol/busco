@@ -7,27 +7,24 @@
     "items": {
         "type": "object",
         "properties": {
-            "sample": {
+            "fasta": {
+                "type": "string",
+                "format": "file-path",
+                "exists": true,
+                "pattern": "^([\\S\\s]*\\/)?[^\\s\\/]+\\.f(ast)?a(\\.gz)?$",
+                "errorMessage": "Genome FastA file must be provided, cannot contain spaces and must have extension '.fa.gz' or '.fasta.gz'"
+            },
+            "lineage": {
+                "type": "string",
+                "pattern": "_odb(10|12)$",
+                "description": "Name of the ODB lineage to run BUSCO on. The pipeline defaults to the global --lineage parameter."
+            },
+            "outdir": {
                 "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "Sample name must be provided and cannot contain spaces",
-                "meta": ["id"]
-            },
-            "fastq_1": {
-                "type": "string",
-                "format": "file-path",
-                "exists": true,
-                "pattern": "^([\\S\\s]*\\/)?[^\\s\\/]+\\.f(ast)?q\\.gz$",
-                "errorMessage": "FastQ file for reads 1 must be provided, cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'"
-            },
-            "fastq_2": {
-                "type": "string",
-                "format": "file-path",
-                "exists": true,
-                "pattern": "^([\\S\\s]*\\/)?[^\\s\\/]+\\.f(ast)?q\\.gz$",
-                "errorMessage": "FastQ file for reads 2 cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'"
+                "errorMessage": "Output directory for this assembly. Per-lineage sub-directories will be created under it. The pipeline defaults to the global --outdir parameter."
             }
         },
-        "required": ["sample", "fastq_1"]
+        "required": ["fasta"]
     }
 }

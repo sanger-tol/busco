@@ -3,6 +3,9 @@
     IMPORT MODULES / SUBWORKFLOWS / FUNCTIONS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
+include { GUNZIP                 } from '../modules/nf-core/gunzip/main'
+include { BUSCO_BUSCO            } from '../modules/nf-core/busco/busco/main'
+include { RESTRUCTUREBUSCODIR    } from '../modules/sanger-tol/restructurebuscodir/main'
 include { MULTIQC                } from '../modules/nf-core/multiqc/main'
 include { paramsSummaryMap       } from 'plugin/nf-schema'
 include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
@@ -18,11 +21,66 @@ include { methodsDescriptionText } from '../subworkflows/local/utils_nfcore_busc
 workflow BUSCO {
 
     take:
-    ch_samplesheet // channel: samplesheet read in from --input
+    ch_fastas // channel: all fasta files to process
     main:
 
     ch_versions = channel.empty()
     ch_multiqc_files = channel.empty()
+
+    //
+    // LOGIC: Identify the compressed files
+    //
+    ch_genomes_for_gunzip = ch_fastas
+        .map { fasta, lineage, outdir -> [ [id: fasta.baseName, lineage: lineage ?: params.lineage, outdir: outdir], fasta ] }
+        .branch { meta, fasta ->
+            gunzip: fasta.name.endsWith( ".gz" )
+            skip: true
+        }
+
+    //
+    // MODULE: Decompress compressed FASTA files
+    //
+    GUNZIP ( ch_genomes_for_gunzip.gunzip )
+
+    //
+    // LOGIC: Extract the genome size for decision making downstream
+    //
+    ch_genomes_for_gunzip.skip
+    | mix( GUNZIP.out.gunzip )
+    | map { meta, fa -> [ meta + [genome_size: fa.size()], fa] }
+    | set { ch_genome }
+
+    //
+    // MODULE: Run BUSCO search
+    //
+    BUSCO_BUSCO(
+        ch_genome,
+        'genome',
+        ch_genome.map { meta, fasta -> meta.lineage },
+        params.busco_db,
+        [],
+        []
+    )
+
+
+    //
+    // MODULE: Tidy up the BUSCO output directories before publication
+    //
+
+    busco_out_to_restructure = BUSCO_BUSCO.out.batch_summary
+        .combine( ch_genome.map { meta, fasta -> meta.lineage } )
+        .join(BUSCO_BUSCO.out.short_summaries_txt, remainder: true)
+        .join(BUSCO_BUSCO.out.short_summaries_json, remainder: true)
+        .join(BUSCO_BUSCO.out.full_table, remainder: true)
+        .join(BUSCO_BUSCO.out.missing_busco_list, remainder: true)
+        .join(BUSCO_BUSCO.out.seq_dir)
+        .map { meta, batch_summary, lineage, short_summaries_txt, short_summaries_json, full_table, missing_busco_list, busco_dir ->
+            [meta, lineage, batch_summary, short_summaries_txt ?: [], short_summaries_json ?: [], full_table ?: [], missing_busco_list ?: [], busco_dir]
+        }
+
+    RESTRUCTUREBUSCODIR(
+        busco_out_to_restructure,
+    )
 
     //
     // Collate and save software versions
