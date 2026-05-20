@@ -109,6 +109,9 @@ workflow PIPELINE_INITIALISATION {
         channel.fromPath(fasta)
             .map { fasta_file -> [fasta_file, null, null] }
             .set { ch_fastas }
+
+    } else {
+        error("One of --input or --fasta has to be provided")
     }
 
     emit:
