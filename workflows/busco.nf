@@ -68,14 +68,13 @@ workflow BUSCO {
     //
 
     busco_out_to_restructure = BUSCO_BUSCO.out.batch_summary
-        .combine( ch_genome.map { meta, _fasta -> meta.lineage } )
         .join(BUSCO_BUSCO.out.short_summaries_txt, remainder: true)
         .join(BUSCO_BUSCO.out.short_summaries_json, remainder: true)
         .join(BUSCO_BUSCO.out.full_table, remainder: true)
         .join(BUSCO_BUSCO.out.missing_busco_list, remainder: true)
         .join(BUSCO_BUSCO.out.seq_dir)
-        .map { meta, batch_summary, lineage, short_summaries_txt, short_summaries_json, full_table, missing_busco_list, busco_dir ->
-            [meta, lineage, batch_summary, short_summaries_txt ?: [], short_summaries_json ?: [], full_table ?: [], missing_busco_list ?: [], busco_dir]
+        .map { meta, batch_summary, short_summaries_txt, short_summaries_json, full_table, missing_busco_list, busco_dir ->
+            [meta, meta.lineage, batch_summary, short_summaries_txt ?: [], short_summaries_json ?: [], full_table ?: [], missing_busco_list ?: [], busco_dir]
         }
 
     RESTRUCTUREBUSCODIR(
