@@ -57,7 +57,7 @@ workflow BUSCO {
         ch_genome,
         'genome',
         ch_genome.map { meta, _fasta -> meta.lineage },
-        params.busco_db,
+        params.busco_db ?: [],
         [],
         []
     )
