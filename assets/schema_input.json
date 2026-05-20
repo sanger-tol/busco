@@ -10,7 +10,7 @@
             "fasta": {
                 "type": "string",
                 "format": "file-path",
-                "pattern": "^\\S+$",
+                "pattern": "^\\S+\\.f(ast)?a(\\.gz)?$",
                 "errorMessage": "Assembly path is mandatory and must not contain whitespace"
             },
             "lineage": {
