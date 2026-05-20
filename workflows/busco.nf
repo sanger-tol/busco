@@ -32,7 +32,7 @@ workflow BUSCO {
     //
     ch_genomes_for_gunzip = ch_fastas
         .map { fasta, lineage, outdir -> [ [id: fasta.baseName, lineage: lineage ?: params.lineage, outdir: outdir], fasta ] }
-        .branch { meta, fasta ->
+        .branch { _meta, fasta ->
             gunzip: fasta.name.endsWith( ".gz" )
             skip: true
         }
@@ -56,7 +56,7 @@ workflow BUSCO {
     BUSCO_BUSCO(
         ch_genome,
         'genome',
-        ch_genome.map { meta, fasta -> meta.lineage },
+        ch_genome.map { meta, _fasta -> meta.lineage },
         params.busco_db,
         [],
         []
@@ -68,7 +68,7 @@ workflow BUSCO {
     //
 
     busco_out_to_restructure = BUSCO_BUSCO.out.batch_summary
-        .combine( ch_genome.map { meta, fasta -> meta.lineage } )
+        .combine( ch_genome.map { meta, _fasta -> meta.lineage } )
         .join(BUSCO_BUSCO.out.short_summaries_txt, remainder: true)
         .join(BUSCO_BUSCO.out.short_summaries_json, remainder: true)
         .join(BUSCO_BUSCO.out.full_table, remainder: true)
@@ -85,7 +85,7 @@ workflow BUSCO {
     //
     // Collate and save software versions
     //
-    def topic_versions = Channel.topic("versions")
+    def topic_versions = channel.topic("versions")
         .distinct()
         .branch { entry ->
             versions_file: entry instanceof Path

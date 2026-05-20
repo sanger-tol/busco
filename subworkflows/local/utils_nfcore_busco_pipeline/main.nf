@@ -107,7 +107,7 @@ workflow PIPELINE_INITIALISATION {
 
     } else if (fasta) {
         channel.fromPath(fasta)
-            .map { fasta -> [fasta, null, null] }
+            .map { fasta_file -> [fasta_file, null, null] }
             .set { ch_fastas }
     }
 
