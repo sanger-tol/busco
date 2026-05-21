@@ -6,14 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [[0.3.0](https://github.com/sanger-tol/busco/releases/tag/0.3.0)] – Lincolnshire – [2026-05-XX]
 
 ### Enhancements & fixes
-- Lineage handling has been improved to support:
-    - `ALL` - Which runs all lineages found in the lineage directory
-    - `odb{int}` - Which runs all lineages with the suffix `odb{int}`
-    - `{lineage}` - Without the `odb` suffix, will find the odbs with the prefix `{lineage}`
-    - "{lineage}_odb{int},{lineage}_odb{int}" - Lists are still supported
-    - All options, other than providing a list, are not supported without also using the `--busco_db` option.
-    - Be aware that running `ALL`, can result in 691 jobs submitted. 
 
+- Lineage handling has been improved to support:
+  - `ALL` - Which runs all lineages found in the lineage directory
+  - `odb{int}` - Which runs all lineages with the suffix `odb{int}`
+  - `{lineage}` - Without the `odb` suffix, will find the odbs with the prefix `{lineage}`
+  - "{lineage}\_odb{int},{lineage}\_odb{int}" - Lists are still supported
+  - All options, other than providing a list, are not supported without also using the `--busco_db` option.
+  - Be aware that running `ALL`, can result in 691 jobs submitted.
 
 ## [[0.2.0](https://github.com/sanger-tol/busco/releases/tag/0.2.0)] – Bedfordshire – [2026-05-19]
 
