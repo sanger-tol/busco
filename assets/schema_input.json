@@ -15,7 +15,7 @@
             },
             "lineage": {
                 "type": "string",
-                "pattern": "_odb(10|12)$",
+                "pattern": "(odb(10|12))|(ALL)|([a-z]*)$",
                 "description": "Name of the ODB lineage to run BUSCO on. The pipeline defaults to the global --lineage parameter."
             },
             "outdir": {
@@ -24,6 +24,8 @@
                 "errorMessage": "Output directory for this assembly. Per-lineage sub-directories will be created under it. The pipeline defaults to the global --outdir parameter."
             }
         },
-        "required": ["fasta"]
+        "required": [
+            "fasta"
+        ]
     }
 }
