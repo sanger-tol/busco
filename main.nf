@@ -28,7 +28,7 @@ include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_busc
 workflow SANGERTOL_BUSCO {
 
     take:
-    samplesheet // channel: samplesheet read in from --input
+    fastas // channel: Fasta files to run Busco on
 
     main:
 
@@ -36,7 +36,7 @@ workflow SANGERTOL_BUSCO {
     // WORKFLOW: Run pipeline
     //
     BUSCO (
-        samplesheet
+        fastas
     )
     emit:
     multiqc_report = BUSCO.out.multiqc_report // channel: /path/to/multiqc_report.html
@@ -60,6 +60,7 @@ workflow {
         args,
         params.outdir,
         params.input,
+        params.fasta,
         params.help,
         params.help_full,
         params.show_hidden
@@ -69,7 +70,7 @@ workflow {
     // WORKFLOW: Run main workflow
     //
     SANGERTOL_BUSCO (
-        PIPELINE_INITIALISATION.out.samplesheet
+        PIPELINE_INITIALISATION.out.fastas
     )
     //
     // SUBWORKFLOW: Run completion tasks

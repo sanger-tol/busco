@@ -1,8 +1,14 @@
-# sanger-tol/busco
+<h1>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/images/sanger-tol-busco_logo_dark.png">
+    <img alt="sanger-tol/busco" src="docs/images/sanger-tol-busco_logo_light.png">
+  </picture>
+</h1>
 
 [![Open in GitHub Codespaces](https://img.shields.io/badge/Open_In_GitHub_Codespaces-black?labelColor=grey&logo=github)](https://github.com/codespaces/new/sanger-tol/busco)
 [![GitHub Actions CI Status](https://github.com/sanger-tol/busco/actions/workflows/nf-test.yml/badge.svg)](https://github.com/sanger-tol/busco/actions/workflows/nf-test.yml)
-[![GitHub Actions Linting Status](https://github.com/sanger-tol/busco/actions/workflows/linting.yml/badge.svg)](https://github.com/sanger-tol/busco/actions/workflows/linting.yml)[![Cite with Zenodo](http://img.shields.io/badge/DOI-10.5281/zenodo.XXXXXXX-1073c8?labelColor=000000)](https://doi.org/10.5281/zenodo.XXXXXXX)
+[![GitHub Actions Linting Status](https://github.com/sanger-tol/busco/actions/workflows/linting.yml/badge.svg)](https://github.com/sanger-tol/busco/actions/workflows/linting.yml)
+[![Cite with Zenodo](http://img.shields.io/badge/DOI-10.5281/zenodo.20275259-1073c8?labelColor=000000)](https://doi.org/10.5281/zenodo.20275259)
 [![nf-test](https://img.shields.io/badge/unit_tests-nf--test-337ab7.svg)](https://www.nf-test.com)
 
 [![Nextflow](https://img.shields.io/badge/version-%E2%89%A525.04.0-green?style=flat&logo=nextflow&logoColor=white&color=%230DC09D&link=https%3A%2F%2Fnextflow.io)](https://www.nextflow.io/)
@@ -14,18 +20,13 @@
 
 ## Introduction
 
-**sanger-tol/busco** is a bioinformatics pipeline that ...
+**sanger-tol/busco** is a bioinformatics pipeline to run BUSCO across _many_ genomes and _many_ lineages.
 
-<!-- TODO nf-core:
-   Complete this sentence with a 2-3 sentence summary of what types of data the pipeline ingests, a brief overview of the
-   major pipeline sections and the types of output it produces. You're giving an overview to someone new
-   to nf-core here, in 15-20 seconds. For an example, see https://github.com/nf-core/rnaseq/blob/master/README.md#introduction
--->
+It simply iterates over all requested combinations of genomes and lineages and run BUSCO.
 
-<!-- TODO nf-core: Include a figure that guides the user through the major workflow steps. Many nf-core
-     workflows use the "tube map" design for that. See https://nf-co.re/docs/guidelines/graphic_design/workflow_diagrams#examples for examples.   -->
-<!-- TODO nf-core: Fill in short bullet-pointed list of the default steps in the pipeline -->
-2. Present QC for raw reads ([`MultiQC`](http://multiqc.info/))
+> [!WARNING]
+> This pipeline is still in development. Documentation is still missing.
+> To run the pipeline, refer to the test profile and adjust to your own data.
 
 ## Usage
 
@@ -64,11 +65,20 @@ nextflow run sanger-tol/busco \
 
 ## Credits
 
-sanger-tol/busco was originally written by priyanka-surana.
+sanger-tol/busco was originally written by Tyler Chafin during the
+[Cambridge BioHackathon 2024](https://www.c2d3.cam.ac.uk/events/2024-biohackathon)
+with the participation of:
 
-We thank the following people for their extensive assistance in the development of this pipeline:
+- [Pete Dockrill **@PeteDockrill**](https://github.com/PeteDockrill)
+- [Axel Rodriguez **@errepeAxel**](https://github.com/errepeAxel)
 
-<!-- TODO nf-core: If applicable, make list of people who have also contributed -->
+[Matthieu Muffato **@muffato**](https://github.com/muffato) then
+updated the pipeline for release under the [sanger-tol](https://github.com/sanger-tol)
+umbrella organisation.
+
+The pipeline underwent a large reset in v0.2.0 to focus on automating
+BUSCO runs.
+Functionality to run the BUSCO steps has been removed but will be reintegrated later.
 
 ## Contributions and Support
 

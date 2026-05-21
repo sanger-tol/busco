@@ -24,6 +24,7 @@ lint:
     - .github/workflows/branch.yml
     - .github/CONTRIBUTING.md
     - .github/workflows/linting_comment.yml
+    - .gitattributes
   merge_markers: false
   multiqc_config:
     - report_comment
@@ -34,8 +35,8 @@ lint:
 nf_core_version: 3.5.1
 repository_type: pipeline
 template:
-  author: priyanka-surana
-  description: Quality assessment of genome assemblies
+  author: "@muffato"
+  description: Quality assessment of genome assemblies with BUSCO
   force: false
   is_nfcore: false
   name: busco
@@ -43,4 +44,4 @@ template:
   outdir: .
   skip_features:
     - igenomes
-  version: 0.9.0
+  version: 0.2.0

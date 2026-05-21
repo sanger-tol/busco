@@ -10,8 +10,16 @@
             "type": "object",
             "fa_icon": "fas fa-terminal",
             "description": "Define where the pipeline should find input data and save output data.",
-            "required": ["input", "outdir"],
+            "required": ["outdir"],
             "properties": {
+                "fasta": {
+                    "type": "string",
+                    "format": "file-path",
+                    "exists": true,
+                    "description": "Path to the Fasta file to analyze. Can be a remote location.",
+                    "help_text": "This file can also be compressed with Gzip.",
+                    "fa_icon": "fas fa-dna"
+                },
                 "input": {
                     "type": "string",
                     "format": "file-path",
@@ -22,6 +30,19 @@
                     "description": "Path to comma-separated file containing information about the samples in the experiment.",
                     "help_text": "You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row.",
                     "fa_icon": "fas fa-file-csv"
+                },
+                "lineage": {
+                    "type": "string",
+                    "pattern": "_odb(10|12)$",
+                    "description": "Name of the Busco lineage to use",
+                    "fa_icon": "fas fa-bone"
+                },
+                "busco_db": {
+                    "type": "string",
+                    "format": "directory-path",
+                    "exists": true,
+                    "description": "Local directory where clade-specific BUSCO lineage datasets are stored",
+                    "fa_icon": "fas fa-folder-open"
                 },
                 "outdir": {
                     "type": "string",
@@ -41,7 +62,23 @@
                     "description": "MultiQC report title. Printed as page header, used for filename if not otherwise specified.",
                     "fa_icon": "fas fa-file-signature"
                 }
-            }
+            },
+            "oneOf": [{ "required": ["input"] }, { "required": ["fasta"] }]
+        },
+        "execution": {
+            "title": "Execution",
+            "type": "object",
+            "description": "Control the execution of the pipeline.",
+            "default": "",
+            "properties": {
+                "use_work_dir_as_temp": {
+                    "type": "boolean",
+                    "description": "Set to true to make tools (e.g. sort, FastK, MerquryFK, BLASTP, BLASTX) use the work directory for their temporary files, rather than the system default.",
+                    "fa_icon": "fas fa-arrow-circle-down",
+                    "hidden": false
+                }
+            },
+            "fa_icon": "fas fa-running"
         },
         "institutional_config_options": {
             "title": "Institutional config options",
@@ -204,6 +241,9 @@
     "allOf": [
         {
             "$ref": "#/$defs/input_output_options"
+        },
+        {
+            "$ref": "#/$defs/execution"
         },
         {
             "$ref": "#/$defs/institutional_config_options"

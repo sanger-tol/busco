@@ -6,9 +6,14 @@ nextflow_pipeline {
 
     test("-profile test") {
 
+        setup {
+            curlAndExtract("https://tolit.cog.sanger.ac.uk/test-data/resources/busco/genomenote.GCA_963859965.1.2025-12-08.tar.gz", "${launchDir}/")
+        }
+
         when {
             params {
-                outdir = "$outputDir"
+                outdir   = "$outputDir"
+                busco_db = "${launchDir}/genomenote.GCA_963859965.1.2025-12-08"
             }
         }
 
