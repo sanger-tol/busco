@@ -31,12 +31,12 @@
                 "pipeline_info/busco_software_mqc_versions.yml"
             ],
             [
-                "GCA_963859965.1.fasta.full_table.tsv:md5,f6fc3eb53ce3f94520c293bfae2f256d",
+                "GCA_963859965.1.fasta.full_table.tsv:md5,6d8e1467c24c90a0b1a2c4de9a5a45d5",
                 "GCA_963859965.1.fasta.missing_busco_list.tsv:md5,7907b15451b96b0da834f1f48e214ec4",
-                "GCA_963859965.1.fasta.short_summary.tsv:md5,7b96a07d83d720fb7c61a0d468c3afb2"
+                "GCA_963859965.1.fasta.short_summary.tsv:md5,97bf63d6cb79a5255dfd8974aecf406a"
             ]
         ],
-        "timestamp": "2026-05-16T12:11:43.436015597",
+        "timestamp": "2026-05-20T18:12:51.948145441",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.2"
