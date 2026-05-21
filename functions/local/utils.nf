@@ -28,7 +28,7 @@ def normaliseLineage(lineage, lineage_path, sample_id) {
         error "Lineages directory not found: ${lineages_dir.absolutePath}"
     }
 
-    // Collect all valid lineage directory names (pattern: <taxon>_odb<N>)
+    // Collect all valid lineage directory names (pattern: {lineage}_odb{int})
     def all_lineages = lineages_dir.list()
         ?.findAll { it =~ /^.+_odb\d+$/ }
         ?.sort() ?: []
@@ -39,20 +39,23 @@ def normaliseLineage(lineage, lineage_path, sample_id) {
         return all_lineages
     } else if (lineage =~ /^odb\d+$/) {
         // e.g. "odb10" or "odb12" – return all lineages with that version suffix
-        all_found_lineages = all_lineages.findAll { it.endsWith("_${lineage}") }
+        def all_found_lineages = all_lineages.findAll { it.endsWith("_${lineage}") }
+        log.info "BUSCO [normaliseLineage]: ${sample_id} - '${lineage}' == returns ${all_found_lineages.size()} odb files"
 
-        // if the user has input a lineage and we can't find any lineages with that suffix,
-        // it's likely they were expecting it to be there, so error out.
         if (!all_found_lineages) {
-            error "No lineages found for odb version: ${lineage}"
+            error "No lineages found for odb version: ${lineage}\n-Check ${lineages_dir}"
         }
 
-        log.info "BUSCO [normaliseLineage]: ${sample_id} - '${lineage}' == returns ${all_found_lineages.size()} odb files"
         return all_found_lineages
     } else {
         // Partial taxon name, e.g. "lepidoptera" – return all lineages with that prefix
         def taxon_lineages = all_lineages.findAll { it.startsWith("${lineage}_") }
         log.info "BUSCO [normaliseLineage]: ${sample_id} - '${lineage}' == returns ${taxon_lineages.size()} odb files"
+
+        if (!taxon_lineages) {
+            error "No lineages found for odb version: ${lineage}\n-Check ${lineages_dir}"
+        }
+
         return taxon_lineages
     }
 }

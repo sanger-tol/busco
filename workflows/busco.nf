@@ -3,10 +3,16 @@
     IMPORT MODULES / SUBWORKFLOWS / FUNCTIONS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
+// Module imports
 include { GUNZIP                 } from '../modules/nf-core/gunzip/main'
 include { BUSCO_BUSCO            } from '../modules/nf-core/busco/busco/main'
 include { RESTRUCTUREBUSCODIR    } from '../modules/sanger-tol/restructurebuscodir/main'
 include { MULTIQC                } from '../modules/nf-core/multiqc/main'
+
+// Sanger-ToL custom functions
+include { normaliseLineage       } from '../functions/local/utils.nf'
+
+// NF-Core default imports
 include { paramsSummaryMap       } from 'plugin/nf-schema'
 include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { softwareVersionsToYAML } from '../subworkflows/nf-core/utils_nfcore_pipeline'
@@ -31,7 +37,15 @@ workflow BUSCO {
     // LOGIC: Identify the compressed files
     //
     ch_genomes_for_gunzip = ch_fastas
-        .map { fasta, lineage, outdir -> [ [id: fasta.baseName, lineage: lineage ?: params.lineage, outdir: outdir], fasta ] }
+        .map { fasta, lineage, outdir ->
+            def lineage_path = params.busco_db ?: []
+            def new_lineage = lineage ? normaliseLineage(lineage, lineage_path, fasta.baseName) : params.lineage
+
+            tuple(
+                [id: fasta.baseName, lineage_input: lineage ?: params.lineage, lineage: new_lineage, outdir: outdir],
+                fasta
+            )
+        }
         .branch { _meta, fasta ->
             gunzip: fasta.name.endsWith( ".gz" )
             skip: true
@@ -46,9 +60,13 @@ workflow BUSCO {
     // LOGIC: Extract the genome size for decision making downstream
     //
     ch_genomes_for_gunzip.skip
-    | mix( GUNZIP.out.gunzip )
-    | map { meta, fa -> [ meta + [genome_size: fa.size()], fa] }
-    | set { ch_genome }
+        .mix( GUNZIP.out.gunzip )
+        .map { meta, fa -> [ meta + [genome_size: fa.size()], fa] }
+        .flatMap { meta, fa ->
+            def lineages = meta.lineage
+            lineages.collect { lin -> [ meta + [lineage: lin], fa ] }
+        }
+        .set { ch_genome }
 
     //
     // MODULE: Run BUSCO search
