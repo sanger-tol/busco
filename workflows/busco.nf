@@ -39,7 +39,7 @@ workflow BUSCO {
     ch_genomes_for_gunzip = ch_fastas
         .map { fasta, lineage, outdir ->
             def lineage_path = params.busco_db ?: []
-            def new_lineage = lineage ? normaliseLineage(lineage, lineage_path, fasta.baseName) : params.lineage
+            def new_lineage = params.lineage ? [params.lineage] : normaliseLineage(lineage, lineage_path, fasta.baseName)
 
             tuple(
                 [id: fasta.baseName, lineage_input: lineage ?: params.lineage, lineage: new_lineage, outdir: outdir],
@@ -67,6 +67,8 @@ workflow BUSCO {
             lineages.collect { lin -> [ meta + [lineage: lin], fa ] }
         }
         .set { ch_genome }
+
+    ch_genome.view{"BUSCO_INPUT: $it"}
 
     //
     // MODULE: Run BUSCO search
