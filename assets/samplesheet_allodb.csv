@@ -1,0 +1,7 @@
+fasta,lineage,outdir
+https://tolit.cog.sanger.ac.uk/test-data/Meles_meles/assembly/release/mMelMel3.1_paternal_haplotype/GCA_922984935.2.subset.phiXspike.fasta.gz,odb12,Meles_meles.ALL_ODB12
+https://tolit.cog.sanger.ac.uk/test-data/Laetiporus_sulphureus/assembly/release/gfLaeSulp1.1/insdc/GCA_927399515.1.fasta.gz,odb10,Laetiporus_sulphureus.ALL_ODB10
+https://tolit.cog.sanger.ac.uk/test-data/Ceramica_pisi/assembly/release/ilCerPisi1.1/insdc/GCA_963859965.1.fasta.gz,ALL,Ceramica_pisi.ALL_ODBS
+https://tolit.cog.sanger.ac.uk/test-data/Ceramica_pisi/assembly/release/ilCerPisi1.1/insdc/GCA_963859965.1.fasta.gz,lepidoptera,Ceramica_pisi.ALL_LEP_ODBS
+https://tolit.cog.sanger.ac.uk/test-data/Laetiporus_sulphureus/assembly/release/gfLaeSulp1.1/insdc/GCA_927399515.1.fasta.gz,fungi_odb10,Laetiporus_sulphureus.FUNGI_ODB10
+https://tolit.cog.sanger.ac.uk/test-data/Laetiporus_sulphureus/assembly/release/gfLaeSulp1.1/insdc/GCA_927399515.1.fasta.gz,"fungi_odb10,eukaryota_odb12",Laetiporus_sulphureus.LIST_OF_ODB
