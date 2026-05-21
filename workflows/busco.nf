@@ -68,7 +68,6 @@ workflow BUSCO {
         }
         .set { ch_genome }
 
-    ch_genome.view{"BUSCO_INPUT: $it"}
 
     //
     // MODULE: Run BUSCO search
