@@ -42,7 +42,7 @@ workflow BUSCO {
             def new_lineage = params.lineage ? [params.lineage] : normaliseLineage(lineage, lineage_path, fasta.baseName)
 
             tuple(
-                [id: fasta.baseName, lineage_input: lineage ?: params.lineage, lineage: new_lineage, outdir: outdir],
+                [id: fasta.baseName, lineage: new_lineage, outdir: outdir],
                 fasta
             )
         }
