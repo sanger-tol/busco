@@ -5,14 +5,20 @@ authors:
     given-names: Matthieu
     orcid: https://orcid.org/0000-0002-7860-3560
     website: https://github.com/muffato
+  - affiliation: Wellcome Sanger Institute
+    email: dp24@sanger.ac.uk
+    family-names: Pointon
+    given-names: Damon-Lee Bernard
+    orcid: https://orcid.org/0000-0003-2949-6719
+    website: https://github.com/DLBPointon
 cff-version: 1.2.0
-date-released: "2026-05-19"
+date-released: "2026-06-02"
 doi: 10.5281/zenodo.20275259
 license: MIT
 message: If you use this software, please cite it using the metadata from this file
   and all references from CITATIONS.md.
 repository-code: https://github.com/sanger-tol/busco
-title: sanger-tol/busco v0.2.0 - Bedfordshire
+title: sanger-tol/busco v0.3.0 - Lincolnshire
 type: software
 url: https://pipelines.tol.sanger.ac.uk/busco
-version: 0.2.0
+version: 0.3.0
