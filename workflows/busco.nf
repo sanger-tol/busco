@@ -46,9 +46,11 @@ workflow BUSCO {
     //
     // LOGIC: Extract the genome size for decision making downstream
     //
-    ch_genomes_for_gunzip.skip
-        .mix( GUNZIP.out.gunzip )
-
+    GUNZIP.out.gunzip
+        // To have the name without the .fa/.fasta extension
+        .map { meta, fa -> [ meta + [id: fa.baseName], fa ] }
+        // These are already named as expected
+        .mix ( ch_genomes_for_gunzip.skip )
         .map { meta, fa -> [ meta + [genome_size: fa.size()], fa] }
         .multiMap { meta, fasta ->
             reference:   [ meta, fasta ]
@@ -65,7 +67,7 @@ workflow BUSCO {
     //
     // SUBWORKFLOW: SEARCH FOR BUSCO ODBS, RUN BUSCO AND RESTRUCTURE THE OUTPUT DIRECTORIES
     //
-    ODBSEARCH_BUSCO_RESTRUCTURE(
+    ODBSEARCH_BUSCO_RESTRUCTURE (
         ch_busco_input.reference,
         ch_busco_input.busco_db,
         ch_busco_input.mapping_dir,
