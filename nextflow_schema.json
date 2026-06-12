@@ -38,6 +38,11 @@
                     "description": "Name of the Busco lineage to use",
                     "fa_icon": "fas fa-bone"
                 },
+                "taxid": {
+                    "type": "integer",
+                    "description": "Taxonomic ID of the species",
+                    "fa_icon": "fas fa-id"
+                },
                 "mapping_directory": {
                     "type": "string",
                     "format": "directory-path",
@@ -54,6 +59,11 @@
                 "odb_mode": {
                     "type": "string",
                     "description": "The mode in which to use ODB search ['basal', 'latest', 'ancestral'], use as CSV list",
+                    "fa_icon": "fas fa-folder-open"
+                },
+                "odb_versions": {
+                    "type": "string",
+                    "description": "The ODB versions to use ['odb10', 'odb12', 'odb12.2] use as CSV list",
                     "fa_icon": "fas fa-folder-open"
                 },
                 "outdir": {

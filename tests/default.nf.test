@@ -5,7 +5,7 @@ nextflow_pipeline {
     tag "pipeline"
 
     test("-profile test") {
-        config "../conf/test_full.config"
+        config "../conf/test.config"
 
         setup {
             curlAndExtract("https://tolit.cog.sanger.ac.uk/test-data/resources/busco/genomenote.GCA_963859965.1.2025-12-08.tar.gz", "${launchDir}/")
@@ -42,10 +42,9 @@ nextflow_pipeline {
 
         when {
             params {
-                outdir      = "$outputDir"
-                busco_db    = "${launchDir}/genomenote.GCA_963859965.1.2025-12-08"
-                mapping_dir = "${launchDir}/mapping_files/"
-
+                busco_db            = "${launchDir}/genomenote.GCA_963859965.1.2025-12-08"
+                mapping_directory   = "${launchDir}/mapping_files/"
+                outdir              = "${launchDir}/output"
             }
         }
 

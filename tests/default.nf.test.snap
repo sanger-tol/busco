@@ -2,8 +2,12 @@
     "-profile test": {
         "content": [
             {
+                "API_SCRIPTS_GET_LINEAGE_ODBS": {
+                    "get_odbs": 2.0,
+                    "python": "3.14.5"
+                },
                 "BUSCO_BUSCO": {
-                    "busco": "6.0.0"
+                    "busco": "6.1.0"
                 },
                 "GUNZIP": {
                     "gunzip": 1.13
@@ -12,7 +16,7 @@
                     "restructurebuscodir": 1.0
                 },
                 "Workflow": {
-                    "sanger-tol/busco": "v0.2.0"
+                    "sanger-tol/busco": "v0.3.0"
                 }
             },
             [
@@ -31,15 +35,15 @@
                 "pipeline_info/busco_software_mqc_versions.yml"
             ],
             [
-                "GCA_963859965.1.fasta.full_table.tsv:md5,6d8e1467c24c90a0b1a2c4de9a5a45d5",
-                "GCA_963859965.1.fasta.missing_busco_list.tsv:md5,7907b15451b96b0da834f1f48e214ec4",
+                "GCA_963859965.1.fasta.full_table.tsv:md5,d3d2bfae2b4cbad68136ae1ba53250e3",
+                "GCA_963859965.1.fasta.missing_busco_list.tsv:md5,4fd74c85d50e315601ee9a3fa25f2b26",
                 "GCA_963859965.1.fasta.short_summary.tsv:md5,97bf63d6cb79a5255dfd8974aecf406a"
             ]
         ],
-        "timestamp": "2026-05-20T18:12:51.948145441",
+        "timestamp": "2026-06-12T15:38:30.738095745",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "25.10.2"
+            "nextflow": "25.10.4"
         }
     }
 }
