@@ -3,14 +3,13 @@
     IMPORT MODULES / SUBWORKFLOWS / FUNCTIONS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-include { GUNZIP                 } from '../modules/nf-core/gunzip/main'
-include { BUSCO_BUSCO            } from '../modules/nf-core/busco/busco/main'
-include { RESTRUCTUREBUSCODIR    } from '../modules/sanger-tol/restructurebuscodir/main'
-include { MULTIQC                } from '../modules/nf-core/multiqc/main'
-include { paramsSummaryMap       } from 'plugin/nf-schema'
-include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
-include { softwareVersionsToYAML } from '../subworkflows/nf-core/utils_nfcore_pipeline'
-include { methodsDescriptionText } from '../subworkflows/local/utils_nfcore_busco_pipeline'
+include { GUNZIP                        } from '../modules/nf-core/gunzip/main'
+include { ODBSEARCH_BUSCO_RESTRUCTURE   } from '../subworkflows/sanger-tol/odbsearch_busco_restructure/main'
+include { MULTIQC                       } from '../modules/nf-core/multiqc/main'
+include { paramsSummaryMap              } from 'plugin/nf-schema'
+include { paramsSummaryMultiqc          } from '../subworkflows/nf-core/utils_nfcore_pipeline'
+include { softwareVersionsToYAML        } from '../subworkflows/nf-core/utils_nfcore_pipeline'
+include { methodsDescriptionText        } from '../subworkflows/local/utils_nfcore_busco_pipeline'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -31,7 +30,7 @@ workflow BUSCO {
     // LOGIC: Identify the compressed files
     //
     ch_genomes_for_gunzip = ch_fastas
-        .map { fasta, lineage, outdir -> [ [id: fasta.baseName, lineage: lineage ?: params.lineage, outdir: outdir], fasta ] }
+        .map { fasta, taxid, lineage, outdir -> [ [id: fasta.baseName, taxid: taxid, lineage: lineage ?: params.lineage, outdir: outdir], fasta ] }
         .branch { _meta, fasta ->
             gunzip: fasta.name.endsWith( ".gz" )
             skip: true
@@ -46,40 +45,34 @@ workflow BUSCO {
     // LOGIC: Extract the genome size for decision making downstream
     //
     ch_genomes_for_gunzip.skip
-    | mix( GUNZIP.out.gunzip )
-    | map { meta, fa -> [ meta + [genome_size: fa.size()], fa] }
-    | set { ch_genome }
+        .mix( GUNZIP.out.gunzip )
 
-    //
-    // MODULE: Run BUSCO search
-    //
-    BUSCO_BUSCO(
-        ch_genome,
-        'genome',
-        ch_genome.map { meta, _fasta -> meta.lineage },
-        params.busco_db ?: [],
-        [],
-        []
-    )
-
-
-    //
-    // MODULE: Tidy up the BUSCO output directories before publication
-    //
-
-    busco_out_to_restructure = BUSCO_BUSCO.out.batch_summary
-        .join(BUSCO_BUSCO.out.short_summaries_txt, remainder: true)
-        .join(BUSCO_BUSCO.out.short_summaries_json, remainder: true)
-        .join(BUSCO_BUSCO.out.full_table, remainder: true)
-        .join(BUSCO_BUSCO.out.missing_busco_list, remainder: true)
-        .join(BUSCO_BUSCO.out.seq_dir)
-        .map { meta, batch_summary, short_summaries_txt, short_summaries_json, full_table, missing_busco_list, busco_dir ->
-            [meta, meta.lineage, batch_summary, short_summaries_txt ?: [], short_summaries_json ?: [], full_table ?: [], missing_busco_list ?: [], busco_dir]
+        .map { meta, fa -> [ meta + [genome_size: fa.size()], fa] }
+        .multiMap { meta, fasta ->
+            reference:   [ meta, fasta ]
+            taxid:       [ meta, meta.taxid ]
+            lineage:     [ meta, meta.lineage ]
+            outdir:      [ meta, meta.outdir ]
+            mapping_dir: params.mapping_directory
+            busco_db:    params.busco_db
+            restructure: true
         }
+        .set { ch_busco_input }
 
-    RESTRUCTUREBUSCODIR(
-        busco_out_to_restructure,
+
+    //
+    // SUBWORKFLOW: SEARCH FOR BUSCO ODBS, RUN BUSCO AND RESTRUCTURE THE OUTPUT DIRECTORIES
+    //
+    ODBSEARCH_BUSCO_RESTRUCTURE(
+        ch_busco_input.reference,
+        ch_busco_input.busco_db,
+        ch_busco_input.mapping_dir,
+        ch_busco_input.taxid,
+        ch_busco_input.lineage,
+        ch_busco_input.outdir,
+        ch_busco_input.restructure
     )
+
 
     //
     // Collate and save software versions

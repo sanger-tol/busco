@@ -5,12 +5,6 @@
         "https://github.com/nf-core/modules.git": {
             "modules": {
                 "nf-core": {
-                    "busco/busco": {
-                        "branch": "master",
-                        "git_sha": "25e280b4e6cac8cf6af580e9823264f5bc83cefa",
-                        "installed_by": ["modules"],
-                        "patch": "modules/nf-core/busco/busco/busco-busco.diff"
-                    },
                     "gunzip": {
                         "branch": "master",
                         "git_sha": "96c57dfd98a0641886a67bd449fe33ee2ec0e374",
@@ -46,6 +40,11 @@
         "https://github.com/sanger-tol/nf-core-modules.git": {
             "modules": {
                 "sanger-tol": {
+                    "api_scripts/get_lineage_odbs": {
+                        "branch": "main",
+                        "git_sha": "df8a0154e69086a95c5aec71e9d46e3b03dfdd20",
+                        "installed_by": ["modules"]
+                    },
                     "restructurebuscodir": {
                         "branch": "main",
                         "git_sha": "8dac7d789fb5ec033c38e69c2553e71cae0dd4c3",
