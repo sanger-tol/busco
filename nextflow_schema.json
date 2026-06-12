@@ -35,7 +35,6 @@
                 },
                 "lineage": {
                     "type": "string",
-                    "pattern": "_odb(10|12)$",
                     "description": "Name of the Busco lineage to use",
                     "fa_icon": "fas fa-bone"
                 },
