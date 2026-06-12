@@ -45,6 +45,9 @@ workflow ODBSEARCH_BUSCO_RESTRUCTURE {
         .map { id, meta, odb, ref_meta, ref -> [ ref_meta, odb, ref ] }
         .combine( ch_taxid, by: 0 )
         .combine( ch_output_dir, by: 0 )
+        .unique { meta, odb, ref, tax_id, outdir_location ->
+            [ meta, odb ]
+        } // Make unique by meta.id and odb[0] to avoid duplicate entries caused by multiple entried in the input samplesheet
         .multiMap { meta, odb, ref, tax_id, outdir_location ->
             def new_meta = meta + [ lineage: odb[0], lineage_rating: odb[1], taxid: tax_id, outdir: outdir_location, genome_size: ref.size() ]
             reference: [ new_meta, ref ]
