@@ -3,11 +3,14 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-<<<<<<< HEAD
 ## [[0.3.0](https://github.com/sanger-tol/busco/releases/tag/0.3.0)] – Lincolnshire – [2026-06-16]
+
+> [!WARNING]
+> This pipeline is still in development. Documentation is still missing.
 
 ### Enhancements & fixes
 
+- Reorganised the outputs to match the [Genome After-Party convention](https://pipelines.tol.sanger.ac.uk/docs/usage/gap_conventions)
 - Move from local/busco workflow to sanger-tol/busco subworkflow.
 - Adopt the `sanger-tol/api_search/get_odb_lineages` module, which uses taxid's to fetch lineage information about the sample. These are used to inform ODB selection.
 - Adopt the `sanger-tol/busco/busco` module which is patched for prodigal use.
@@ -30,14 +33,6 @@ Note, since the pipeline is using Nextflow DSL2, each process will be run with i
 | ------------------------------ | ----------- | ------------ |
 | `BUSCO_BUSCO`                  | 6.0.0       | 6.1.0        |
 | `API_SCRIPTS_GET_LINEAGE_ODBS` | NA          | 2.0          |
-=======
-## [[0.3.0](https://github.com/sanger-tol/busco/releases/tag/0.3.0)] – Lincolnshire – [2026-06-02]
-
-- Reorganised the outputs to match the [Genome After-Party convention](https://pipelines.tol.sanger.ac.uk/docs/usage/gap_conventions)
-
-> [!WARNING]
-> This pipeline is still in development. Documentation is still missing.
->>>>>>> dev
 
 ## [[0.2.0](https://github.com/sanger-tol/busco/releases/tag/0.2.0)] – Bedfordshire – [2026-05-19]
 
