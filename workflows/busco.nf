@@ -21,6 +21,8 @@ workflow BUSCO {
 
     take:
     ch_fastas // channel: all fasta files to process
+
+
     main:
 
     ch_versions = channel.empty()
