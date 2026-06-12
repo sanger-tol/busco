@@ -12,31 +12,31 @@
                     "restructurebuscodir": 1.0
                 },
                 "Workflow": {
-                    "sanger-tol/busco": "v0.2.0"
+                    "sanger-tol/busco": "v0.3.0"
                 }
             },
             [
-                "GCA_963859965.1.fasta",
-                "GCA_963859965.1.fasta/lepidoptera_odb12",
-                "GCA_963859965.1.fasta/lepidoptera_odb12/GCA_963859965.1.fasta.fragmented_busco_sequences.tar.gz",
-                "GCA_963859965.1.fasta/lepidoptera_odb12/GCA_963859965.1.fasta.full_table.tsv",
-                "GCA_963859965.1.fasta/lepidoptera_odb12/GCA_963859965.1.fasta.missing_busco_list.tsv",
-                "GCA_963859965.1.fasta/lepidoptera_odb12/GCA_963859965.1.fasta.multi_copy_busco_sequences.tar.gz",
-                "GCA_963859965.1.fasta/lepidoptera_odb12/GCA_963859965.1.fasta.short_summary.json",
-                "GCA_963859965.1.fasta/lepidoptera_odb12/GCA_963859965.1.fasta.short_summary.tsv",
-                "GCA_963859965.1.fasta/lepidoptera_odb12/GCA_963859965.1.fasta.short_summary.txt",
-                "GCA_963859965.1.fasta/lepidoptera_odb12/GCA_963859965.1.fasta.single_copy_busco_sequences.tar.gz",
+                "busco",
+                "busco/lepidoptera_odb12",
+                "busco/lepidoptera_odb12/GCA_963859965.1.lepidoptera_odb12.fragmented_busco_sequences.tar.gz",
+                "busco/lepidoptera_odb12/GCA_963859965.1.lepidoptera_odb12.full_table.tsv.gz",
+                "busco/lepidoptera_odb12/GCA_963859965.1.lepidoptera_odb12.missing_busco_list.tsv.gz",
+                "busco/lepidoptera_odb12/GCA_963859965.1.lepidoptera_odb12.multi_copy_busco_sequences.tar.gz",
+                "busco/lepidoptera_odb12/GCA_963859965.1.lepidoptera_odb12.short_summary.json",
+                "busco/lepidoptera_odb12/GCA_963859965.1.lepidoptera_odb12.short_summary.tsv",
+                "busco/lepidoptera_odb12/GCA_963859965.1.lepidoptera_odb12.short_summary.txt",
+                "busco/lepidoptera_odb12/GCA_963859965.1.lepidoptera_odb12.single_copy_busco_sequences.tar.gz",
                 "multiqc_report.html",
                 "pipeline_info",
                 "pipeline_info/busco_software_mqc_versions.yml"
             ],
             [
-                "GCA_963859965.1.fasta.full_table.tsv:md5,6d8e1467c24c90a0b1a2c4de9a5a45d5",
-                "GCA_963859965.1.fasta.missing_busco_list.tsv:md5,7907b15451b96b0da834f1f48e214ec4",
-                "GCA_963859965.1.fasta.short_summary.tsv:md5,97bf63d6cb79a5255dfd8974aecf406a"
+                "GCA_963859965.1.lepidoptera_odb12.full_table.tsv.gz:md5,6d8e1467c24c90a0b1a2c4de9a5a45d5",
+                "GCA_963859965.1.lepidoptera_odb12.missing_busco_list.tsv.gz:md5,7907b15451b96b0da834f1f48e214ec4",
+                "GCA_963859965.1.lepidoptera_odb12.short_summary.tsv:md5,97bf63d6cb79a5255dfd8974aecf406a"
             ]
         ],
-        "timestamp": "2026-05-20T18:12:51.948145441",
+        "timestamp": "2026-06-01T09:37:50.389381208",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.2"
