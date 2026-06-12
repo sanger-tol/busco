@@ -30,7 +30,7 @@ workflow BUSCO {
     // LOGIC: Identify the compressed files
     //
     ch_genomes_for_gunzip = ch_fastas
-        .map { fasta, taxid, lineage, outdir -> [ [id: fasta.baseName, taxid: taxid, lineage: lineage ?: params.lineage, outdir: outdir], fasta ] }
+        .map { fasta, taxid, lineage, outdir -> [ [id: fasta.baseName, taxid: taxid ?: params.taxid, lineage: lineage ?: params.lineage, outdir: outdir], fasta ] }
         .branch { _meta, fasta ->
             gunzip: fasta.name.endsWith( ".gz" )
             skip: true
