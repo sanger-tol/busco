@@ -16,14 +16,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Adopt the `sanger-tol/busco/busco` module which is patched for prodigal use.
 - Addition of params: `taxid`, `odb_lineage`, `odb_version`.
 - Update the samplesheet to include `taxid` and trim the lineage to remove the odb version prefex.
+- Minor updates to `usage.md` to explain the new parameters.
 
 ### Parameters
 
-| Old Version | New Versions  |
-| ----------- | ------------- |
-| NA          | --taxid       |
-| NA          | --odb_lineage |
-| NA          | --odb_version |
+| Old Version | New Versions   |
+| ----------- | -------------- |
+| NA          | --taxid        |
+| NA          | --odb_lineages |
+| NA          | --odb_version  |
 
 ### Software Dependencies
 
