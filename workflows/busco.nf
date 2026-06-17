@@ -66,11 +66,17 @@ workflow BUSCO {
             taxid:       [ meta, meta.taxid ]
             lineage:     [ meta, meta.lineage ]
             outdir:      [ meta, meta.outdir ]
-            mapping_dir: params.mapping_directory
-            busco_db:    params.busco_db
             restructure: true
         }
         .set { ch_busco_input }
+
+    ch_mapping_dir = params.mapping_directory
+        ? channel.value( file(params.mapping_directory, type: "dir") )
+        : channel.value( [] )
+
+    ch_busco_db = params.busco_db
+        ? channel.value( file(params.busco_db, type: "dir") )
+        : channel.value( [] )
 
 
     //
@@ -78,8 +84,8 @@ workflow BUSCO {
     //
     ODBSEARCH_BUSCO_RESTRUCTURE (
         ch_busco_input.reference,
-        ch_busco_input.busco_db,
-        ch_busco_input.mapping_dir,
+        ch_busco_db,
+        ch_mapping_dir,
         ch_busco_input.taxid,
         ch_busco_input.lineage,
         ch_busco_input.outdir,
