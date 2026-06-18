@@ -6,7 +6,6 @@
 include { GUNZIP                        } from '../modules/nf-core/gunzip/main'
 include { ODBSEARCH_BUSCO_RESTRUCTURE   } from '../subworkflows/sanger-tol/odbsearch_busco_restructure/main'
 include { MULTIQC                       } from '../modules/nf-core/multiqc/main'
-include { get_value                     } from '../functions/local/busco_utils'
 include { paramsSummaryMap              } from 'plugin/nf-schema'
 include { paramsSummaryMultiqc          } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { softwareVersionsToYAML        } from '../subworkflows/nf-core/utils_nfcore_pipeline'
@@ -33,15 +32,15 @@ workflow BUSCO {
     // LOGIC: Identify the compressed files
     //
     ch_genomes_for_gunzip = ch_fastas
-        .map { fasta, taxid, lineage, outdir -> [
+        .map { fasta, taxid, lineage, outdir -> tuple(
             [
                 id: fasta.baseName,
                 taxid: taxid ?: params.taxid,
-                lineage: get_value(lineage, params.lineage),
+                lineage: lineage ?: params.lineage ?: [],
                 outdir: outdir
             ],
             fasta
-        ] }
+        ) }
         .branch { _meta, fasta ->
             gunzip: fasta.name.endsWith( ".gz" )
             skip: true
