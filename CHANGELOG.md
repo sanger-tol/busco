@@ -10,9 +10,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 > [!WARNING]
 > This pipeline is still in development. Documentation is still missing.
 
-> [!WARNING]
-> This pipeline is still in development. Documentation is still missing.
-
 ### Enhancements & fixes
 
 - Reorganised the outputs to match the [Genome After-Party convention](https://pipelines.tol.sanger.ac.uk/docs/usage/gap_conventions)
