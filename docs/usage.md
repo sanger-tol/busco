@@ -8,15 +8,13 @@
 
 ## Samplesheet input
 
-You will need to create a samplesheet with information about the samples you would like to analyse before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row as shown in the examples below.
+You will need to create a samplesheet with information about the samples you would like to analyse before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 4 columns, and a header row as shown in the examples below.
 
 ```bash
 --input '[path to samplesheet file]'
 ```
 
-### Multiple runs of the same sample
 
-The `sample` identifiers have to be the same when you have re-sequenced the same sample more than once e.g. to increase sequencing depth. The pipeline will concatenate the raw reads before performing any downstream analysis. Below is an example for the same sample sequenced across 3 lanes:
 
 ```csv title="samplesheet.csv"
 fasta,taxid,lineage,outdir
@@ -51,11 +49,12 @@ All the of the above modes are futher effected by the `params.odb_versions` argu
 
 ### odb_versions
 
-As of pipeline version `0.3.0`, there are three odb versions available for use in busco: `odb10`, `odb12`, and `odb12`. Entering these items as a csv list at the command line will multiple the number of odb results found by the `api_scripts/get_lineage_odbs` process.
+As of pipeline version `0.3.0`, there are three odb versions available for use in busco: `odb10`, `odb12`, and `odb12.2`. Entering these items as a csv list at the command line will multiple the number of odb results found by the `api_scripts/get_lineage_odbs` process.
 
 For example:
 
 The following command will run the pipeline with `odb10` and `odb12` versions, using the `basal` mode will result in (by default) 6 busco runs:
+`--odb_mode basal --odb_versions odb10,odb12`
 
 Likewise, a taxid with 8 ancestral lineages using `--odb_mode odb10,odb12,odb12.2` will result in 32 busco runs.
 
