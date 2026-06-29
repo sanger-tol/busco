@@ -10,7 +10,9 @@
             "type": "object",
             "fa_icon": "fas fa-terminal",
             "description": "Define where the pipeline should find input data and save output data.",
-            "required": ["outdir"],
+            "required": [
+                "outdir"
+            ],
             "properties": {
                 "fasta": {
                     "type": "string",
@@ -31,17 +33,38 @@
                     "help_text": "You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row.",
                     "fa_icon": "fas fa-file-csv"
                 },
+                "taxid": {
+                    "type": "number",
+                    "description": "The NCBI taxid of the input assembly.",
+                    "fa_icon": "fas fa-bone"
+                },
                 "lineage": {
                     "type": "string",
-                    "pattern": "_odb(10|12)$",
                     "description": "Name of the Busco lineage to use",
                     "fa_icon": "fas fa-bone"
+                },
+                "mapping_directory": {
+                    "type": "string",
+                    "format": "directory-path",
+                    "exists": true,
+                    "description": "The directory containing BUSCO taxid mapping files.",
+                    "fa_icon": "fas fa-folder-open"
                 },
                 "busco_db": {
                     "type": "string",
                     "format": "directory-path",
                     "exists": true,
                     "description": "Local directory where clade-specific BUSCO lineage datasets are stored",
+                    "fa_icon": "fas fa-folder-open"
+                },
+                "odb_mode": {
+                    "type": "string",
+                    "description": "The mode in which to use ODB search ['basal', 'latest', 'ancestral'], use as CSV list. This can be ignored when using the lineage field in a samplesheet.",
+                    "fa_icon": "fas fa-folder-open"
+                },
+                "odb_versions": {
+                    "type": "string",
+                    "description": "The ODB versions to use ['odb10', 'odb12', 'odb12.2] use as CSV list. The mapping file for each odb listed must be included in the mapping directory.",
                     "fa_icon": "fas fa-folder-open"
                 },
                 "outdir": {
@@ -63,7 +86,18 @@
                     "fa_icon": "fas fa-file-signature"
                 }
             },
-            "oneOf": [{ "required": ["input"] }, { "required": ["fasta"] }]
+            "oneOf": [
+                {
+                    "required": [
+                        "input"
+                    ]
+                },
+                {
+                    "required": [
+                        "fasta"
+                    ]
+                }
+            ]
         },
         "execution": {
             "title": "Execution",
@@ -147,7 +181,14 @@
                     "description": "Method used to save pipeline results to output directory.",
                     "help_text": "The Nextflow `publishDir` option specifies which intermediate files should be saved to the output directory. This option tells the pipeline what method should be used to move these files. See [Nextflow docs](https://www.nextflow.io/docs/latest/process.html#publishdir) for details.",
                     "fa_icon": "fas fa-copy",
-                    "enum": ["symlink", "rellink", "link", "copy", "copyNoFollow", "move"],
+                    "enum": [
+                        "symlink",
+                        "rellink",
+                        "link",
+                        "copy",
+                        "copyNoFollow",
+                        "move"
+                    ],
                     "hidden": true
                 },
                 "email_on_fail": {
@@ -224,7 +265,10 @@
                     "hidden": true
                 },
                 "help": {
-                    "type": ["boolean", "string"],
+                    "type": [
+                        "boolean",
+                        "string"
+                    ],
                     "description": "Display the help message."
                 },
                 "help_full": {
