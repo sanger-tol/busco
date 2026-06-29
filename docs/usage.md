@@ -14,8 +14,6 @@ You will need to create a samplesheet with information about the samples you wou
 --input '[path to samplesheet file]'
 ```
 
-
-
 ```csv title="samplesheet.csv"
 fasta,taxid,lineage,outdir
 https://tolit.cog.sanger.ac.uk/test-data/Meles_meles/assembly/release/mMelMel3.1_paternal_haplotype/GCA_922984935.2.subset.phiXspike.fasta.gz,9662,mammalia,Meles_meles.GCA_922984935.2.subset.phiXspike
