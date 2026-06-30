@@ -63,8 +63,7 @@
                 "odb_versions": {
                     "type": "string",
                     "description": "The ODB versions to use ['odb10', 'odb12', 'odb12.2] use as CSV list. The mapping file for each odb listed must be included in the mapping directory.",
-                    "fa_icon": "fas fa-folder-open",
-                    "required": true
+                    "fa_icon": "fas fa-folder-open"
                 },
                 "outdir": {
                     "type": "string",
@@ -87,10 +86,10 @@
             },
             "oneOf": [
                 {
-                    "required": ["input"]
+                    "required": ["input", "odb_versions", "mapping_directory"]
                 },
                 {
-                    "required": ["fasta"]
+                    "required": ["fasta", "odb_versions", "mapping_directory", "taxid", "lineage"]
                 }
             ]
         },
