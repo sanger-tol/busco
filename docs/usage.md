@@ -20,12 +20,13 @@ https://tolit.cog.sanger.ac.uk/test-data/Meles_meles/assembly/release/mMelMel3.1
 https://tolit.cog.sanger.ac.uk/test-data/Laetiporus_sulphureus/assembly/release/gfLaeSulp1.1/insdc/GCA_927399515.1.fasta.gz,5630,fungi,Laetiporus_sulphureus.GCA_927399515.1
 ```
 
-| Column    | Description                                                                                            |
-| --------- | ------------------------------------------------------------------------------------------------------ |
-| `fasta`   | Path to the FASTA file for the sample. This is the input sequence data for the pipeline.               |
-| `taxid`   | Taxonomic ID for the sample. This is used to identify the lineage for the sample.                      |
-| `lineage` | A specific lineage, corresponding to an ODB to be run on the sample. This is an optional field.        |
-| `outdir`  | Output directory for the results. This is where the results will be saved inside the `params.outdir` . |
+| Column    | Description                                                                                                         |
+| --------- | ------------------------------------------------------------------------------------------------------------------- |
+| `fasta`   | Path to the FASTA file for the sample. This is the input sequence data for the pipeline.                            |
+| `taxid`   | Taxonomic ID for the sample. This is used to identify the lineage for the sample in "ancestral" and "latest" modes. |
+| `mode`    | Automated selection of lineages. Options are "basal", "ancestral", and "latest". This is an optional field.         |
+| `lineage` | A specific lineage, corresponding to an ODB to be run on the sample. This is an optional field.                     |
+| `outdir`  | Output directory for the results. This is where the results will be saved inside the `params.outdir` .              |
 
 An [example samplesheet](../assets/samplesheet.csv) has been provided with the pipeline.
 

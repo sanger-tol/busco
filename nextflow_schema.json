@@ -89,7 +89,7 @@
                     "required": ["input", "odb_versions", "mapping_directory"]
                 },
                 {
-                    "required": ["fasta", "odb_versions", "mapping_directory", "taxid", "lineage"]
+                    "required": ["fasta", "odb_versions", "mapping_directory"]
                 }
             ]
         },

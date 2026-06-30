@@ -15,11 +15,15 @@
             },
             "taxid": {
                 "type": "integer",
-                "description": "NCBI taxid of the input assembly. Used to search for the appropriate ODB lineage to run BUSCO on."
+                "description": "NCBI taxid of the input assembly. Optional. Used to search for the appropriate ODB lineage to run BUSCO on in \"ancestral\" and \"latest\" modes, see below."
+            },
+            "mode": {
+                "type": "string",
+                "description": "Automated selection of lineages. Options are \"basal\", \"ancestral\", and \"latest\". Optional."
             },
             "lineage": {
                 "type": "string",
-                "description": "Name of the ODB lineage to run BUSCO on. The pipeline defaults to the global --lineage parameter."
+                "description": "Name of the ODB lineage to run BUSCO on. Optional. The pipeline defaults to the global --lineage parameter."
             },
             "outdir": {
                 "type": "string",
@@ -27,6 +31,6 @@
                 "errorMessage": "Output directory for this assembly. Per-lineage sub-directories will be created under it. The pipeline defaults to the global --outdir parameter."
             }
         },
-        "required": ["fasta", "taxid"]
+        "required": ["fasta"]
     }
 }
