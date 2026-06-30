@@ -1,7 +1,7 @@
 fasta,taxid,mode,lineage,outdir
-https://tolit.cog.sanger.ac.uk/test-data/Meles_meles/assembly/release/mMelMel3.1_paternal_haplotype/GCA_922984935.2.subset.phiXspike.fasta.gz,9662,,mammalia,Meles_meles.GCA_922984935.2.subset.phiXspike
-https://tolit.cog.sanger.ac.uk/test-data/Laetiporus_sulphureus/assembly/release/gfLaeSulp1.1/insdc/GCA_927399515.1.fasta.gz,5630,,fungi,Laetiporus_sulphureus.GCA_927399515.1
-https://tolit.cog.sanger.ac.uk/test-data/Laetiporus_sulphureus/assembly/release/gfLaeSulp1.1/insdc/GCA_927399515.1.fasta.gz,5630,basal,Laetiporus_sulphureus.GCA_927399515.1
-https://tolit.cog.sanger.ac.uk/test-data/Cantharis_rufa/assembly/GCA_947369205.1_OX376310.1_CANBKR010000003.1.fasta.gz,350087,,arthropoda,Cantharis_rufa.GCA_947369205.1_OX376310.1_CANBKR010000003.1
+https://tolit.cog.sanger.ac.uk/test-data/Meles_meles/assembly/release/mMelMel3.1_paternal_haplotype/GCA_922984935.2.subset.phiXspike.fasta.gz,,,mammalia,Meles_meles.GCA_922984935.2.subset.phiXspike
+https://tolit.cog.sanger.ac.uk/test-data/Laetiporus_sulphureus/assembly/release/gfLaeSulp1.1/insdc/GCA_927399515.1.fasta.gz,,,fungi,Laetiporus_sulphureus.GCA_927399515.1
+https://tolit.cog.sanger.ac.uk/test-data/Laetiporus_sulphureus/assembly/release/gfLaeSulp1.1/insdc/GCA_927399515.1.fasta.gz,,basal,,Laetiporus_sulphureus.GCA_927399515.1
+https://tolit.cog.sanger.ac.uk/test-data/Cantharis_rufa/assembly/GCA_947369205.1_OX376310.1_CANBKR010000003.1.fasta.gz,,,arthropoda,Cantharis_rufa.GCA_947369205.1_OX376310.1_CANBKR010000003.1
 https://tolit.cog.sanger.ac.uk/test-data/Ceramica_pisi/assembly/release/ilCerPisi1.1/insdc/GCA_963859965.1.fasta.gz,988087,latest,,Ceramica_pisi.GCA_963859965.1
 https://tolit.cog.sanger.ac.uk/test-data/Acropora_cervicornis/assembly/release/reference/insdc/GCA_964034985.1.fasta.gz,6130,ancestral,,Acropora_cervicornis.GCA_964034985.1
