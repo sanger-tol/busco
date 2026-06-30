@@ -13,9 +13,12 @@
                 "pattern": "^\\S+\\.f(ast)?a(\\.gz)?$",
                 "errorMessage": "Assembly path is mandatory and must not contain whitespace"
             },
+            "taxid": {
+                "type": "integer",
+                "description": "NCBI taxid of the input assembly. Used to search for the appropriate ODB lineage to run BUSCO on."
+            },
             "lineage": {
                 "type": "string",
-                "pattern": "_odb(10|12)$",
                 "description": "Name of the ODB lineage to run BUSCO on. The pipeline defaults to the global --lineage parameter."
             },
             "outdir": {
@@ -24,6 +27,6 @@
                 "errorMessage": "Output directory for this assembly. Per-lineage sub-directories will be created under it. The pipeline defaults to the global --outdir parameter."
             }
         },
-        "required": ["fasta"]
+        "required": ["fasta", "taxid"]
     }
 }
