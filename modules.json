@@ -42,7 +42,7 @@
                 "sanger-tol": {
                     "apiscripts/getlineageodbs": {
                         "branch": "main",
-                        "git_sha": "bf41d0f419e2823beb942df63c3b5485174d030f",
+                        "git_sha": "a22848b060d6d01ac93f76a80a935ae18519b36d",
                         "installed_by": ["modules", "odbsearch_busco_restructure"]
                     },
                     "busco/busco": {
@@ -61,7 +61,7 @@
                 "sanger-tol": {
                     "odbsearch_busco_restructure": {
                         "branch": "main",
-                        "git_sha": "49e7250f04f3a010dfe48e85a0770ca240bfadd1",
+                        "git_sha": "a22848b060d6d01ac93f76a80a935ae18519b36d",
                         "installed_by": ["subworkflows"]
                     }
                 }
