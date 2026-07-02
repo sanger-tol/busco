@@ -43,7 +43,7 @@
                     "apiscripts/getlineageodbs": {
                         "branch": "main",
                         "git_sha": "bf41d0f419e2823beb942df63c3b5485174d030f",
-                        "installed_by": ["modules", "odbsearch_busco_restructure"]
+                        "installed_by": ["odbsearch_busco_restructure"]
                     },
                     "busco/busco": {
                         "branch": "main",
@@ -53,7 +53,7 @@
                     "restructurebuscodir": {
                         "branch": "main",
                         "git_sha": "62f377e684494c39eeb5d0f620602ae53e673d06",
-                        "installed_by": ["modules", "odbsearch_busco_restructure"]
+                        "installed_by": ["odbsearch_busco_restructure"]
                     }
                 }
             },

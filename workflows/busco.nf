@@ -37,7 +37,7 @@ workflow BUSCO {
                 id: fasta.baseName,
                 taxid: taxid ?: params.taxid,
                 lineage: lineage ?: params.lineage ?: [],
-                outdir: outdir
+                outdir: outdir,
             ],
             fasta
         ) }
