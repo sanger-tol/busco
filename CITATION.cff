@@ -1,5 +1,11 @@
 authors:
   - affiliation: Wellcome Sanger Institute
+    email: we3@sanger.ac.uk
+    family-names: Eagles
+    given-names: William
+    orcid: https://orcid.org/0009-0006-9956-0404
+    website: https://github.com/weaglesBio
+  - affiliation: Wellcome Sanger Institute
     email: mm49@sanger.ac.uk
     family-names: Muffato
     given-names: Matthieu
@@ -12,7 +18,7 @@ authors:
     orcid: https://orcid.org/0000-0003-2949-6719
     website: https://github.com/DLBPointon
 cff-version: 1.2.0
-date-released: "2026-06-02"
+date-released: "2026-07-03"
 doi: 10.5281/zenodo.20275259
 license: MIT
 message: If you use this software, please cite it using the metadata from this file
