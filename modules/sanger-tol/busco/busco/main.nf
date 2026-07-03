@@ -1,10 +1,11 @@
 process BUSCO_BUSCO {
     tag "${meta.id}"
+    label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/64/6456c1880785adefb4fc9b480bb7662479d5662c17f70d5e8715b7f2a63ee28b/data'
-        : 'community.wave.seqera.io/library/busco_numpy:b66937518a305dd7'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/97/97c07dca6975c8aa84249314cc7aedb72cf651b77f4941a3cf98104e84eb8b28/data'
+        : 'community.wave.seqera.io/library/busco_numpy:3ecb8547e6c97dd1'}"
     // Note: one test had to be disabled when switching to Busco 6.0.0, cf https://github.com/nf-core/modules/pull/8781/files
     // Try to restore it when upgrading Busco to a later version
 
@@ -20,6 +21,7 @@ process BUSCO_BUSCO {
     path config_file
     val clean_intermediates
 
+
     output:
     tuple val(meta), path("*-busco.batch_summary.txt"), emit: batch_summary
     tuple val(meta), path("short_summary.*.txt"), emit: short_summaries_txt, optional: true
@@ -34,6 +36,7 @@ process BUSCO_BUSCO {
     tuple val(meta), path("busco_downloads/lineages/*"), emit: downloaded_lineages, optional: true
     tuple val(meta), path("*-busco/*/run_*/busco_sequences/single_copy_busco_sequences/*.faa"), emit: single_copy_faa, optional: true
     tuple val(meta), path("*-busco/*/run_*/busco_sequences/single_copy_busco_sequences/*.fna"), emit: single_copy_fna, optional: true
+    tuple val(meta), val(lineage), path("*-busco.batch_summary.txt"), path("short_summary.*.txt"), path("short_summary.*.json"), path("*-busco/*/run_*/full_table.tsv"), path("*-busco/*/run_*/missing_busco_list.tsv"), path("*-busco/*/run_*/busco_sequences"), emit: restructure_busco_output, optional: true
     tuple val("${task.process}"), val('busco'), eval("busco --version 2> /dev/null | sed 's/BUSCO //g'"), emit: versions_busco, topic: versions
 
     when:

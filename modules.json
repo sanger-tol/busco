@@ -5,12 +5,6 @@
         "https://github.com/nf-core/modules.git": {
             "modules": {
                 "nf-core": {
-                    "busco/busco": {
-                        "branch": "master",
-                        "git_sha": "25e280b4e6cac8cf6af580e9823264f5bc83cefa",
-                        "installed_by": ["modules"],
-                        "patch": "modules/nf-core/busco/busco/busco-busco.diff"
-                    },
                     "gunzip": {
                         "branch": "master",
                         "git_sha": "96c57dfd98a0641886a67bd449fe33ee2ec0e374",
@@ -46,10 +40,29 @@
         "https://github.com/sanger-tol/nf-core-modules.git": {
             "modules": {
                 "sanger-tol": {
+                    "apiscripts/getlineageodbs": {
+                        "branch": "main",
+                        "git_sha": "a22848b060d6d01ac93f76a80a935ae18519b36d",
+                        "installed_by": ["odbsearch_busco_restructure"]
+                    },
+                    "busco/busco": {
+                        "branch": "main",
+                        "git_sha": "bf41d0f419e2823beb942df63c3b5485174d030f",
+                        "installed_by": ["odbsearch_busco_restructure"]
+                    },
                     "restructurebuscodir": {
                         "branch": "main",
                         "git_sha": "62f377e684494c39eeb5d0f620602ae53e673d06",
-                        "installed_by": ["modules"]
+                        "installed_by": ["odbsearch_busco_restructure"]
+                    }
+                }
+            },
+            "subworkflows": {
+                "sanger-tol": {
+                    "odbsearch_busco_restructure": {
+                        "branch": "main",
+                        "git_sha": "a22848b060d6d01ac93f76a80a935ae18519b36d",
+                        "installed_by": ["subworkflows"]
                     }
                 }
             }

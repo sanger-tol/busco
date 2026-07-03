@@ -31,17 +31,38 @@
                     "help_text": "You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row.",
                     "fa_icon": "fas fa-file-csv"
                 },
+                "taxid": {
+                    "type": "number",
+                    "description": "The NCBI taxid of the input assembly.",
+                    "fa_icon": "fas fa-bone"
+                },
                 "lineage": {
                     "type": "string",
-                    "pattern": "_odb(10|12)$",
                     "description": "Name of the Busco lineage to use",
                     "fa_icon": "fas fa-bone"
+                },
+                "mapping_directory": {
+                    "type": "string",
+                    "format": "directory-path",
+                    "exists": true,
+                    "description": "The directory containing BUSCO taxid mapping files.",
+                    "fa_icon": "fas fa-folder-open"
                 },
                 "busco_db": {
                     "type": "string",
                     "format": "directory-path",
                     "exists": true,
                     "description": "Local directory where clade-specific BUSCO lineage datasets are stored",
+                    "fa_icon": "fas fa-folder-open"
+                },
+                "mode": {
+                    "type": "string",
+                    "description": "The mode in which to use ODB search ['basal', 'latest', 'ancestral'], use as CSV list. This can be ignored when using the lineage field in a samplesheet.",
+                    "fa_icon": "fas fa-folder-open"
+                },
+                "odb_versions": {
+                    "type": "string",
+                    "description": "The ODB versions to use ['odb10', 'odb12', 'odb12.2] use as CSV list. The mapping file for each odb listed must be included in the mapping directory.",
                     "fa_icon": "fas fa-folder-open"
                 },
                 "outdir": {
@@ -63,7 +84,14 @@
                     "fa_icon": "fas fa-file-signature"
                 }
             },
-            "oneOf": [{ "required": ["input"] }, { "required": ["fasta"] }]
+            "oneOf": [
+                {
+                    "required": ["input", "odb_versions", "mapping_directory"]
+                },
+                {
+                    "required": ["fasta", "odb_versions", "mapping_directory"]
+                }
+            ]
         },
         "execution": {
             "title": "Execution",

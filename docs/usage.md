@@ -8,47 +8,76 @@
 
 ## Samplesheet input
 
-You will need to create a samplesheet with information about the samples you would like to analyse before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row as shown in the examples below.
+You will need to create a samplesheet with information about the samples you would like to analyse before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 4 columns, and a header row as shown in the examples below.
 
 ```bash
 --input '[path to samplesheet file]'
 ```
 
-### Multiple runs of the same sample
-
-The `sample` identifiers have to be the same when you have re-sequenced the same sample more than once e.g. to increase sequencing depth. The pipeline will concatenate the raw reads before performing any downstream analysis. Below is an example for the same sample sequenced across 3 lanes:
-
 ```csv title="samplesheet.csv"
-sample,fastq_1,fastq_2
-CONTROL_REP1,AEG588A1_S1_L002_R1_001.fastq.gz,AEG588A1_S1_L002_R2_001.fastq.gz
-CONTROL_REP1,AEG588A1_S1_L003_R1_001.fastq.gz,AEG588A1_S1_L003_R2_001.fastq.gz
-CONTROL_REP1,AEG588A1_S1_L004_R1_001.fastq.gz,AEG588A1_S1_L004_R2_001.fastq.gz
+fasta,taxid,lineage,outdir
+https://tolit.cog.sanger.ac.uk/test-data/Meles_meles/assembly/release/mMelMel3.1_paternal_haplotype/GCA_922984935.2.subset.phiXspike.fasta.gz,9662,mammalia,Meles_meles.GCA_922984935.2.subset.phiXspike
+https://tolit.cog.sanger.ac.uk/test-data/Laetiporus_sulphureus/assembly/release/gfLaeSulp1.1/insdc/GCA_927399515.1.fasta.gz,5630,fungi,Laetiporus_sulphureus.GCA_927399515.1
 ```
 
-### Full samplesheet
-
-The pipeline will auto-detect whether a sample is single- or paired-end using the information provided in the samplesheet. The samplesheet can have as many columns as you desire, however, there is a strict requirement for the first 3 columns to match those defined in the table below.
-
-A final samplesheet file consisting of both single- and paired-end data may look something like the one below. This is for 6 samples, where `TREATMENT_REP3` has been sequenced twice.
-
-```csv title="samplesheet.csv"
-sample,fastq_1,fastq_2
-CONTROL_REP1,AEG588A1_S1_L002_R1_001.fastq.gz,AEG588A1_S1_L002_R2_001.fastq.gz
-CONTROL_REP2,AEG588A2_S2_L002_R1_001.fastq.gz,AEG588A2_S2_L002_R2_001.fastq.gz
-CONTROL_REP3,AEG588A3_S3_L002_R1_001.fastq.gz,AEG588A3_S3_L002_R2_001.fastq.gz
-TREATMENT_REP1,AEG588A4_S4_L003_R1_001.fastq.gz,
-TREATMENT_REP2,AEG588A5_S5_L003_R1_001.fastq.gz,
-TREATMENT_REP3,AEG588A6_S6_L003_R1_001.fastq.gz,
-TREATMENT_REP3,AEG588A6_S6_L004_R1_001.fastq.gz,
-```
-
-| Column    | Description                                                                                                                                                                            |
-| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `sample`  | Custom sample name. This entry will be identical for multiple sequencing libraries/runs from the same sample. Spaces in sample names are automatically converted to underscores (`_`). |
-| `fastq_1` | Full path to FastQ file for Illumina short reads 1. File has to be gzipped and have the extension ".fastq.gz" or ".fq.gz".                                                             |
-| `fastq_2` | Full path to FastQ file for Illumina short reads 2. File has to be gzipped and have the extension ".fastq.gz" or ".fq.gz".                                                             |
+| Column    | Description                                                                                                         |
+| --------- | ------------------------------------------------------------------------------------------------------------------- |
+| `fasta`   | Path to the FASTA file for the sample. This is the input sequence data for the pipeline.                            |
+| `taxid`   | Taxonomic ID for the sample. This is used to identify the lineage for the sample in "ancestral" and "latest" modes. |
+| `mode`    | Automated selection of lineages. Options are "basal", "ancestral", and "latest". This is an optional field.         |
+| `lineage` | A specific lineage, corresponding to an ODB to be run on the sample. This is an optional field.                     |
+| `outdir`  | Output directory for the results. This is where the results will be saved inside the `params.outdir` .              |
 
 An [example samplesheet](../assets/samplesheet.csv) has been provided with the pipeline.
+
+## Params explanations
+
+### mode
+
+`params.mode` is an argument that specifies how the `api_scripts/get_lineage_odbs` process should best handle grabbing lineage ODBs for the sample.
+
+By default this is `""` and will rely only on the lineages specified in the `lineage` parameter.
+
+`basal` will cause the process to only use the maximmum list of `[\'eukaryota\', \'bacteria\', \'archaea\']`. This is further modifiable by adding the `--basal_lineages {lineage}` argument to the module.config. This allows the end user to specify their own desired basal lineages used across all pipeline runs.
+
+`latest` will cause the script to select the most recent ODB associated with it's ancestral lineages. For example if the ancestral lineage list is `[\'eukaryota\', \'metazoa\', \'insecta\', \'hymentoptera\']`, `latest` will select the most recent ODB of `hymentoptera`.
+
+`ancestral` will cause the script to return the whole list of ancestral lineages for the input taxid, given via `params.taxid` or samplesheet field.
+
+All the of the above modes are futher effected by the `params.odb_versions` argument.
+
+### odb_versions
+
+As of pipeline version `0.3.0`, there are three odb versions available for use in busco: `odb10`, `odb12`, and `odb12.2`. Entering these items as a csv list at the command line will multiple the number of odb results found by the `api_scripts/get_lineage_odbs` process.
+
+For example:
+
+The following command will run the pipeline with `odb10` and `odb12` versions, using the `basal` mode will result in (by default) 6 busco runs:
+`--mode basal --odb_versions odb10,odb12`
+
+Likewise, a taxid with 8 ancestral lineages using `--odb_versions odb10,odb12,odb12.2` will result in 24 busco runs.
+
+### mapping_directory
+
+ODB mapping files are provided by the [BUSCO](https://busco.ezlab.org/) project at the `busco-data.ezlab.org` data repo:
+
+ODB files must be the merged collection of eukaryota, bacteria and archaea. For example:
+
+To make the `odb10` merged mapping file, the below files must be merged into a single file such as `mapping_files/odb10_mapping_file.txt`:
+
+- https://busco-data.s3.amazonaws.com/placement_files/mapping_taxids-busco_dataset_name.archaea_odb10.2019-12-16.txt.tar.gz"
+- https://busco-data.s3.amazonaws.com/placement_files/mapping_taxids-busco_dataset_name.bacteria_odb10.2019-12-16.txt.tar.gz"
+- https://busco-data.s3.amazonaws.com/placement_files/mapping_taxids-busco_dataset_name.eukaryota_odb10.2019-12-16.txt.tar.gz"
+
+To make the `odb12` merged mapping file, the below files must be merged into a single file such as `mapping_files/odb12_mapping_file.txt`:
+
+- https://busco-data.s3.amazonaws.com/placement_files/mapping_taxids-busco_dataset_name.archaea_odb12.2024-11-15.txt.tar.gz"
+- https://busco-data.s3.amazonaws.com/placement_files/mapping_taxids-busco_dataset_name.bacteria_odb12.2024-11-15.txt.tar.gz"
+- https://busco-data.s3.amazonaws.com/placement_files/mapping_taxids-busco_dataset_name.eukaryota_odb12.2024-11-15.txt.tar.gz"
+
+However, it should be noted that the end user can use any combination of mapping files they wish, as long as they are aware this can change the results of the odb search performed in the pipeline.
+
+## BEYOND THIS POINT IS NOT COMPLETE
 
 ## Running the pipeline
 
