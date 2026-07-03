@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Move from local/busco workflow to sanger-tol/busco subworkflow.
 - Adopt the `sanger-tol/api_search/get_odb_lineages` module, which uses taxid's to fetch lineage information about the sample. These are used to inform ODB selection.
 - Adopt the `sanger-tol/busco/busco` module which is patched for prodigal use.
-- Addition of the params `taxid`, `odb_mode`, `odb_versions` and `mapping_directory`.
+- Addition of the params `taxid`, `mode`, `odb_versions` and `mapping_directory`.
 - Update the samplesheet to include `taxid` and trim the lineage to remove the odb version prefex.
 - Minor updates to `usage.md` to explain the new parameters.
 
@@ -25,7 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 | Old Version | New Versions        |
 | ----------- | ------------------- |
 | NA          | --taxid             |
-| NA          | --odb_mode          |
+| NA          | --mode              |
 | NA          | --odb_versions      |
 | NA          | --mapping_directory |
 

@@ -32,9 +32,9 @@ An [example samplesheet](../assets/samplesheet.csv) has been provided with the p
 
 ## Params explanations
 
-### odb_mode
+### mode
 
-`params.odb_mode` is an argument that specifies how the `api_scripts/get_lineage_odbs` process should best handle grabbing lineage ODBs for the sample.
+`params.mode` is an argument that specifies how the `api_scripts/get_lineage_odbs` process should best handle grabbing lineage ODBs for the sample.
 
 By default this is `""` and will rely only on the lineages specified in the `lineage` parameter.
 
@@ -53,7 +53,7 @@ As of pipeline version `0.3.0`, there are three odb versions available for use i
 For example:
 
 The following command will run the pipeline with `odb10` and `odb12` versions, using the `basal` mode will result in (by default) 6 busco runs:
-`--odb_mode basal --odb_versions odb10,odb12`
+`--mode basal --odb_versions odb10,odb12`
 
 Likewise, a taxid with 8 ancestral lineages using `--odb_versions odb10,odb12,odb12.2` will result in 24 busco runs.
 
