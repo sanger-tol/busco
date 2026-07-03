@@ -168,10 +168,10 @@
             },
             "url": [
                 "https://github.com/sanger-tol/busco",
-                "https://pipelines.tol.sanger.ac.uk/busco/0.3.0/"
+                "https://pipelines.tol.sanger.ac.uk/busco/0.3.1/"
             ],
             "version": [
-                "0.3.0"
+                "0.3.1"
             ]
         },
         {
