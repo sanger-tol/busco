@@ -81,10 +81,16 @@ However, it should be noted that the end user can use any combination of mapping
 
 ## Running the pipeline
 
-The typical command for running the pipeline is as follows:
+This pipeline has been designed to work via the cli or via samplesheet. The typical command for running the pipeline is as follows:
 
 ```bash
 nextflow run sanger-tol/busco --input ./samplesheet.csv --outdir ./results  -profile docker
+```
+
+or
+
+```bash
+nextflow run sanger-tol/busco --fasta {FASTA} --mode {ancestral,latest,basal} --lineage {extra lineages} --taxid {NCBI taxid} --outdir ./results -profile docker
 ```
 
 This will launch the pipeline with the `docker` configuration profile. See below for more information about profiles.
@@ -115,6 +121,17 @@ with:
 
 ```yaml title="params.yaml"
 input: './samplesheet.csv'
+outdir: './results/'
+<...>
+```
+
+or
+
+```yaml title="params.yaml"
+fasta: 'assembly.fasta'
+taxid: 10101
+lineage: 'diptera'
+mode: 'ancestral'
 outdir: './results/'
 <...>
 ```
