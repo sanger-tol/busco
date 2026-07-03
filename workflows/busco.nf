@@ -38,7 +38,7 @@ workflow BUSCO {
                 taxid: taxid ?: params.taxid,
                 mode: mode ?: params.odb_mode,
                 lineage: lineage ?: params.lineage ?: [],
-                outdir: outdir
+                outdir: outdir,
             ],
             fasta
         ) }
