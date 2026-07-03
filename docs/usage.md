@@ -20,20 +20,21 @@ https://tolit.cog.sanger.ac.uk/test-data/Meles_meles/assembly/release/mMelMel3.1
 https://tolit.cog.sanger.ac.uk/test-data/Laetiporus_sulphureus/assembly/release/gfLaeSulp1.1/insdc/GCA_927399515.1.fasta.gz,5630,fungi,Laetiporus_sulphureus.GCA_927399515.1
 ```
 
-| Column    | Description                                                                                            |
-| --------- | ------------------------------------------------------------------------------------------------------ |
-| `fasta`   | Path to the FASTA file for the sample. This is the input sequence data for the pipeline.               |
-| `taxid`   | Taxonomic ID for the sample. This is used to identify the lineage for the sample.                      |
-| `lineage` | A specific lineage, corresponding to an ODB to be run on the sample. This is an optional field.        |
-| `outdir`  | Output directory for the results. This is where the results will be saved inside the `params.outdir` . |
+| Column    | Description                                                                                                         |
+| --------- | ------------------------------------------------------------------------------------------------------------------- |
+| `fasta`   | Path to the FASTA file for the sample. This is the input sequence data for the pipeline.                            |
+| `taxid`   | Taxonomic ID for the sample. This is used to identify the lineage for the sample in "ancestral" and "latest" modes. |
+| `mode`    | Automated selection of lineages. Options are "basal", "ancestral", and "latest". This is an optional field.         |
+| `lineage` | A specific lineage, corresponding to an ODB to be run on the sample. This is an optional field.                     |
+| `outdir`  | Output directory for the results. This is where the results will be saved inside the `params.outdir` .              |
 
 An [example samplesheet](../assets/samplesheet.csv) has been provided with the pipeline.
 
 ## Params explanations
 
-### odb_mode
+### mode
 
-`params.odb_mode` is an argument that specifies how the `api_scripts/get_lineage_odbs` process should best handle grabbing lineage ODBs for the sample.
+`params.mode` is an argument that specifies how the `api_scripts/get_lineage_odbs` process should best handle grabbing lineage ODBs for the sample.
 
 By default this is `""` and will rely only on the lineages specified in the `lineage` parameter.
 
@@ -52,7 +53,7 @@ As of pipeline version `0.3.0`, there are three odb versions available for use i
 For example:
 
 The following command will run the pipeline with `odb10` and `odb12` versions, using the `basal` mode will result in (by default) 6 busco runs:
-`--odb_mode basal --odb_versions odb10,odb12`
+`--mode basal --odb_versions odb10,odb12`
 
 Likewise, a taxid with 8 ancestral lineages using `--odb_versions odb10,odb12,odb12.2` will result in 24 busco runs.
 

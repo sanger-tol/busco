@@ -32,10 +32,11 @@ workflow BUSCO {
     // LOGIC: Identify the compressed files
     //
     ch_genomes_for_gunzip = ch_fastas
-        .map { fasta, taxid, lineage, outdir -> tuple(
+        .map { fasta, taxid, mode, lineage, outdir -> tuple(
             [
                 id: fasta.baseName,
                 taxid: taxid ?: params.taxid,
+                mode: mode ?: params.mode,
                 lineage: lineage ?: params.lineage ?: [],
                 outdir: outdir,
             ],
@@ -56,19 +57,12 @@ workflow BUSCO {
     //
     // LOGIC: Extract the genome size for decision making downstream
     //
-    GUNZIP.out.gunzip
+    ch_reference = GUNZIP.out.gunzip
         // To have the name without the .fa/.fasta extension
         .map { meta, fa -> [ meta + [id: fa.baseName], fa ] }
         // These are already named as expected
         .mix ( ch_genomes_for_gunzip.skip )
         .map { meta, fa -> [ meta + [genome_size: fa.size()], fa] }
-        .multiMap { meta, fasta ->
-            reference:   [ meta, fasta ]
-            taxid:       [ meta, meta.taxid ]
-            lineage:     [ meta, meta.lineage ]
-            restructure: true
-        }
-        .set { ch_busco_input }
 
     ch_mapping_dir = params.mapping_directory
         ? channel.value( file(params.mapping_directory, type: "dir") )
@@ -83,12 +77,10 @@ workflow BUSCO {
     // SUBWORKFLOW: SEARCH FOR BUSCO ODBS, RUN BUSCO AND RESTRUCTURE THE OUTPUT DIRECTORIES
     //
     ODBSEARCH_BUSCO_RESTRUCTURE (
-        ch_busco_input.reference,
+        ch_reference,
         ch_busco_db,
         ch_mapping_dir,
-        ch_busco_input.taxid,
-        ch_busco_input.lineage,
-        ch_busco_input.restructure
+        true,
     )
 
 
