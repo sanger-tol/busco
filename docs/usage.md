@@ -125,7 +125,7 @@ outdir: './results/'
 <...>
 ```
 
-or 
+or
 
 ```yaml title="params.yaml"
 fasta: 'assembly.fasta'
