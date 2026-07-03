@@ -130,6 +130,9 @@
             ],
             "contributor": [
                 {
+                    "@id": "https://orcid.org/0000-0001-8293-4816"
+                },
+                {
                     "@id": "https://orcid.org/0009-0006-9956-0404"
                 },
                 {
@@ -316,6 +319,13 @@
             "@id": ".prettierignore",
             "@type": "File",
             "description": "Ignore file for prettier"
+        },
+        {
+            "@id": "https://orcid.org/0000-0001-8293-4816",
+            "@type": "Person",
+            "affiliation": "Wellcome Sanger Institute",
+            "name": "Brown, Tom",
+            "url": "https://github.com/tbrown91"
         },
         {
             "@id": "https://orcid.org/0009-0006-9956-0404",

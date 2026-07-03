@@ -1,5 +1,10 @@
 authors:
   - affiliation: Wellcome Sanger Institute
+    family-names: Brown
+    given-names: Tom
+    orcid: https://orcid.org/0000-0001-8293-4816
+    website: https://github.com/tbrown91
+  - affiliation: Wellcome Sanger Institute
     email: we3@sanger.ac.uk
     family-names: Eagles
     given-names: William
