@@ -122,20 +122,20 @@ nextflow run sanger-tol/busco -profile docker -params-file params.yaml
 with:
 
 ```yaml title="params.yaml"
-input: './samplesheet.csv'
-odb_versions: 'odb12'
-outdir: './results/'
+input: "./samplesheet.csv"
+odb_versions: "odb12"
+outdir: "./results/"
 ```
 
 or
 
 ```yaml title="params.yaml"
-fasta: 'assembly.fasta.gz'
+fasta: "assembly.fasta.gz"
 taxid: 10101
-lineage: 'diptera'
-mode: 'ancestral'
-odb_versions: 'odb12.2'
-outdir: './results/'
+lineage: "diptera"
+mode: "ancestral"
+odb_versions: "odb12.2"
+outdir: "./results/"
 ```
 
 You can also generate such `YAML`/`JSON` files via [nf-core/launch](https://nf-co.re/launch).
