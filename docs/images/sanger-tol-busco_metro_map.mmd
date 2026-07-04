@@ -1,0 +1,39 @@
+%%metro title: BUSCO pipeline
+%%metro style: dark
+%%metro line_order: span
+%%metro line: main | BUSCO| #2db572
+%%metro line: qc | Quality control | #0570b0
+%%metro file: input| Fasta
+%%metro file: report_out | HTML
+
+graph LR
+    subgraph params_check [Prepare genome]
+
+        input[ ]
+        gunzip([Gunzip])
+        _no_gunzip
+        _uncompressed
+
+        input -->|main,qc| _no_gunzip
+        _no_gunzip -->|main,qc| _uncompressed
+        input -->|main,qc| gunzip
+        gunzip -->|main,qc| _uncompressed
+    end
+
+    subgraph busco [BUSCO]
+        get_odb([Get ODB lineages])
+        busco_busco([BUSCO])
+        restructurebuscodir([Restructure outputs])
+
+        get_odb -->|main,qc| busco_busco
+        busco_busco -->|main| restructurebuscodir
+    end
+
+    subgraph reporting [Reporting]
+        multiqc([MultiQC])
+        multiqc -->|qc| report_out
+    end
+
+    %% Inter-section edges
+    _uncompressed -->|main,qc| get_odb
+    busco_busco -->|qc| multiqc

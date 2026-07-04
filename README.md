@@ -22,6 +22,11 @@
 
 **sanger-tol/busco** runs [BUSCO](https://busco.ezlab.org/) on one or many genome assemblies.
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/images/sanger-tol-busco_metro_map_dark.svg">
+  <img alt="sanger-tol/busco" src="docs/images/sanger-tol-busco_metro_map_light.svg">
+</picture>
+
 The pipeline supports:
 
 - Single-assembly input via `--fasta`
