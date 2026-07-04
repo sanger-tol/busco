@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Enhancements & fixes
 
+- Completed the documentation of the pipeline.
+
 ## [[0.3.0](https://github.com/sanger-tol/busco/releases/tag/0.3.0)] – Lincolnshire – [2026-07-03]
 
 > [!WARNING]

@@ -16,8 +16,8 @@
                     "type": "string",
                     "format": "file-path",
                     "exists": true,
-                    "description": "Path to the Fasta file to analyze. Can be a remote location.",
-                    "help_text": "This file can also be compressed with Gzip.",
+                    "description": "Path/URL to one assembly FASTA file to analyse.",
+                    "help_text": "Supports .fa/.fasta and .fa.gz/.fasta.gz. Use this for single-assembly runs instead of --input.",
                     "fa_icon": "fas fa-dna"
                 },
                 "input": {
@@ -27,42 +27,48 @@
                     "schema": "assets/schema_input.json",
                     "mimetype": "text/csv",
                     "pattern": "^\\S+\\.csv$",
-                    "description": "Path to comma-separated file containing information about the samples in the experiment.",
-                    "help_text": "You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row.",
+                    "description": "Path to a CSV samplesheet describing one or more assemblies.",
+                    "help_text": "Expected header is fasta,taxid,mode,lineage,outdir. Row-level values override global --taxid/--mode/--lineage for that assembly.",
                     "fa_icon": "fas fa-file-csv"
                 },
                 "taxid": {
                     "type": "number",
-                    "description": "The NCBI taxid of the input assembly.",
+                    "description": "Global NCBI taxid for lineage discovery.",
+                    "help_text": "Used when samplesheet taxid is not provided. Required for modes ancestral/latest.",
                     "fa_icon": "fas fa-bone"
                 },
                 "lineage": {
                     "type": "string",
-                    "description": "Name of the Busco lineage to use",
+                    "description": "Global explicit BUSCO lineage(s) to add.",
+                    "help_text": "Comma-separated lineage names (e.g. mammalia,insecta). Used when samplesheet lineage is empty.",
                     "fa_icon": "fas fa-bone"
                 },
                 "mapping_directory": {
                     "type": "string",
                     "format": "directory-path",
                     "exists": true,
-                    "description": "The directory containing BUSCO taxid mapping files.",
+                    "description": "Directory containing BUSCO taxid mapping files.",
+                    "help_text": "Files must be named <odb_version>_mapping.txt, for example odb12_mapping.txt.",
                     "fa_icon": "fas fa-folder-open"
                 },
                 "busco_db": {
                     "type": "string",
                     "format": "directory-path",
                     "exists": true,
-                    "description": "Local directory where clade-specific BUSCO lineage datasets are stored",
+                    "description": "Local BUSCO database directory (optional).",
+                    "help_text": "If set, selected lineages are validated locally and BUSCO runs in offline mode.",
                     "fa_icon": "fas fa-folder-open"
                 },
                 "mode": {
                     "type": "string",
-                    "description": "The mode in which to use ODB search ['basal', 'latest', 'ancestral'], use as CSV list. This can be ignored when using the lineage field in a samplesheet.",
+                    "description": "Global lineage discovery mode(s): basal, latest, ancestral.",
+                    "help_text": "Comma-separated values allowed. latest and ancestral require taxid and cannot be combined together.",
                     "fa_icon": "fas fa-folder-open"
                 },
                 "odb_versions": {
                     "type": "string",
-                    "description": "The ODB versions to use ['odb10', 'odb12', 'odb12.2] use as CSV list. The mapping file for each odb listed must be included in the mapping directory.",
+                    "description": "ODB version(s) to use.",
+                    "help_text": "Comma-separated values (odb10,odb12,odb12.2). Each listed version requires a corresponding mapping file in mapping_directory.",
                     "fa_icon": "fas fa-folder-open"
                 },
                 "outdir": {
@@ -101,7 +107,7 @@
             "properties": {
                 "use_work_dir_as_temp": {
                     "type": "boolean",
-                    "description": "Set to true to make tools (e.g. sort, FastK, MerquryFK, BLASTP, BLASTX) use the work directory for their temporary files, rather than the system default.",
+                    "description": "Use Nextflow work directory for temporary files where supported.",
                     "fa_icon": "fas fa-arrow-circle-down",
                     "hidden": false
                 }
