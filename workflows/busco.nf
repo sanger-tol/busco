@@ -83,6 +83,7 @@ workflow BUSCO {
         true,
     )
 
+    ch_multiqc_files = ch_multiqc_files.mix( ODBSEARCH_BUSCO_RESTRUCTURE.out.short_summaries.map { _meta, file -> file } )
 
     //
     // Collate and save software versions

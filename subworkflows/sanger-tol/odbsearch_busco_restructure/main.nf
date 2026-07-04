@@ -74,5 +74,6 @@ workflow ODBSEARCH_BUSCO_RESTRUCTURE {
     odb_csv             = APISCRIPTS_GETLINEAGEODBS.out.csv
     busco_full_table    = BUSCO_BUSCO.out.full_table
     busco_output        = BUSCO_BUSCO.out.busco_dir
+    short_summaries     = BUSCO_BUSCO.out.short_summaries_txt
     restructured_output = RESTRUCTUREBUSCODIR.out.clean_busco_dir
 }
