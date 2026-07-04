@@ -61,7 +61,7 @@
                 "sanger-tol": {
                     "odbsearch_busco_restructure": {
                         "branch": "main",
-                        "git_sha": "a22848b060d6d01ac93f76a80a935ae18519b36d",
+                        "git_sha": "c7954ddfc10b020ec734b9bf8f6218a1c88ee17e",
                         "installed_by": ["subworkflows"]
                     }
                 }
