@@ -3,9 +3,14 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [[0.3.0](https://github.com/sanger-tol/busco/releases/tag/0.3.0)] – Lincolnshire – [2026-06-02]
+## [[0.3.1](https://github.com/sanger-tol/busco/releases/tag/0.3.1)] – Lincolnshire (patch 1) – [2026-07-06]
 
-- Reorganised the outputs to match the [Genome After-Party convention](https://pipelines.tol.sanger.ac.uk/docs/usage/gap_conventions)
+### Enhancements & fixes
+
+- Completed the documentation of the pipeline.
+- Fixed the MultiQC output.
+
+## [[0.3.0](https://github.com/sanger-tol/busco/releases/tag/0.3.0)] – Lincolnshire – [2026-07-03]
 
 > [!WARNING]
 > This pipeline is still in development. Documentation is still missing.

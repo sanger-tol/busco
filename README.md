@@ -20,45 +20,66 @@
 
 ## Introduction
 
-**sanger-tol/busco** is a bioinformatics pipeline to run BUSCO across _many_ genomes and _many_ lineages.
+**sanger-tol/busco** runs [BUSCO](https://busco.ezlab.org/) on one or many genome assemblies.
 
-It simply iterates over all requested combinations of genomes and lineages and run BUSCO.
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/images/sanger-tol-busco_metro_map_dark.svg">
+  <img alt="sanger-tol/busco" src="docs/images/sanger-tol-busco_metro_map_light.svg">
+</picture>
 
-> [!WARNING]
-> This pipeline is still in development. Documentation is still missing.
-> To run the pipeline, refer to the test profile and adjust to your own data.
+The pipeline supports:
+
+- Single-assembly input via `--fasta`
+- Multi-assembly input via `--input` samplesheet
+- Per-assembly lineage selection and/or automated lineage discovery from NCBI taxonomy (`taxid`)
+- Multiple ODB versions in one run via `--odb_versions`
+
+For each assembly, the pipeline:
+
+1. Decompresses gzipped FASTA files if needed.
+2. Selects BUSCO lineage datasets using `get_odbs.py` and mapping files.
+3. Runs BUSCO for every selected lineage.
+4. Restructures outputs into a lineage-first layout under `busco/`.
+5. Produces a MultiQC report and standard Nextflow trace files.
 
 ## Usage
 
 > [!NOTE]
 > If you are new to Nextflow and nf-core, please refer to [this page](https://nf-co.re/docs/usage/installation) on how to set-up Nextflow. Make sure to [test your setup](https://nf-co.re/docs/usage/introduction#how-to-run-a-pipeline) with `-profile test` before running the workflow on actual data.
 
-<!-- TODO nf-core: Describe the minimum required steps to execute the pipeline, e.g. how to prepare samplesheets.
-     Explain what rows and columns represent. For instance (please edit as appropriate):
-
-First, prepare a samplesheet with your input data that looks as follows:
-
-`samplesheet.csv`:
-
-```csv
-sample,fastq_1,fastq_2
-CONTROL_REP1,AEG588A1_S1_L002_R1_001.fastq.gz,AEG588A1_S1_L002_R2_001.fastq.gz
-```
-
-Each row represents a fastq file (single-end) or a pair of fastq files (paired end).
-
--->
-
-Now, you can run the pipeline using:
-
-<!-- TODO nf-core: update the following command to include all required parameters for a minimal example -->
+Run with a samplesheet:
 
 ```bash
 nextflow run sanger-tol/busco \
    -profile <docker/singularity/.../institute> \
    --input samplesheet.csv \
+  --odb_versions odb12 \
    --outdir <OUTDIR>
 ```
+
+Run with a single FASTA:
+
+```bash
+nextflow run sanger-tol/busco \
+  -profile <docker/singularity/.../institute> \
+  --fasta assembly.fasta.gz \
+  --taxid 988087 \
+  --mode latest \
+  --odb_versions odb12 \
+  --outdir <OUTDIR>
+```
+
+Required arguments:
+
+- Exactly one input mode: `--input` or `--fasta`
+- `--odb_versions` (comma-separated list, e.g. `odb10,odb12,odb12.2`)
+- At least one lineage selection mechanism per sample: `mode` and/or `lineage`
+
+If using `ancestral` or `latest` mode, `taxid` is required (global `--taxid` or per-row samplesheet value).
+
+You can optionally provide `--busco_db` to run BUSCO in offline mode using local lineage datasets.
+
+For full run instructions, input format, and parameter behavior, see [docs/usage.md](docs/usage.md).
 
 > [!WARNING]
 > Please provide pipeline parameters via the CLI or Nextflow `-params-file` option. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration _**except for parameters**_; see [docs](https://nf-co.re/docs/usage/getting_started/configuration#custom-configuration-files).
@@ -86,10 +107,9 @@ If you would like to contribute to this pipeline, please see the [contributing g
 
 ## Citations
 
-<!-- TODO nf-core: Add citation for pipeline after first release. Uncomment lines below and update Zenodo doi and badge at the top of this file. -->
-<!-- If you use sanger-tol/busco for your analysis, please cite it using the following doi: [10.5281/zenodo.XXXXXX](https://doi.org/10.5281/zenodo.XXXXXX) -->
+If you use sanger-tol/busco for your analysis, please cite:
 
-<!-- TODO nf-core: Add bibliography of tools and data used in your pipeline -->
+- [10.5281/zenodo.20275259](https://doi.org/10.5281/zenodo.20275259)
 
 An extensive list of references for the tools used by the pipeline can be found in the [`CITATIONS.md`](CITATIONS.md) file.
 

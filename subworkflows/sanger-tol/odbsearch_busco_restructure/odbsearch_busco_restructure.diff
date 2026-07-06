@@ -1,0 +1,18 @@
+Changes in component 'sanger-tol/odbsearch_busco_restructure'
+'subworkflows/sanger-tol/odbsearch_busco_restructure/meta.yml' is unchanged
+Changes in 'odbsearch_busco_restructure/main.nf':
+--- subworkflows/sanger-tol/odbsearch_busco_restructure/main.nf
++++ subworkflows/sanger-tol/odbsearch_busco_restructure/main.nf
+@@ -74,5 +74,6 @@
+     odb_csv             = APISCRIPTS_GETLINEAGEODBS.out.csv
+     busco_full_table    = BUSCO_BUSCO.out.full_table
+     busco_output        = BUSCO_BUSCO.out.busco_dir
++    short_summaries     = BUSCO_BUSCO.out.short_summaries_txt
+     restructured_output = RESTRUCTUREBUSCODIR.out.clean_busco_dir
+ }
+
+'subworkflows/sanger-tol/odbsearch_busco_restructure/nextflow.config' is unchanged
+'subworkflows/sanger-tol/odbsearch_busco_restructure/tests/offline_basal.config' is unchanged
+'subworkflows/sanger-tol/odbsearch_busco_restructure/tests/main.nf.test' is unchanged
+'subworkflows/sanger-tol/odbsearch_busco_restructure/tests/main.nf.test.snap' is unchanged
+************************************************************

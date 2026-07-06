@@ -1,5 +1,10 @@
 authors:
   - affiliation: Wellcome Sanger Institute
+    family-names: Brown
+    given-names: Tom
+    orcid: https://orcid.org/0000-0001-8293-4816
+    website: https://github.com/tbrown91
+  - affiliation: Wellcome Sanger Institute
     email: we3@sanger.ac.uk
     family-names: Eagles
     given-names: William
@@ -24,7 +29,7 @@ license: MIT
 message: If you use this software, please cite it using the metadata from this file
   and all references from CITATIONS.md.
 repository-code: https://github.com/sanger-tol/busco
-title: sanger-tol/busco v0.3.0 - Lincolnshire
+title: sanger-tol/busco v0.3.1 - Lincolnshire (patch 1)
 type: software
 url: https://pipelines.tol.sanger.ac.uk/busco
-version: 0.3.0
+version: 0.3.1

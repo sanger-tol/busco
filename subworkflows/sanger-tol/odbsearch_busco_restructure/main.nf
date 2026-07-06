@@ -37,8 +37,8 @@ workflow ODBSEARCH_BUSCO_RESTRUCTURE {
             ch_reference.map { meta, ref -> [ meta.id, meta, ref ] }, // Normalise the fasta so we can combine easier
             by: 0,
         )
-        .map { id, meta, odb, ref_meta, ref -> [ ref_meta, odb, ref ] }  // meta == ref_meta thanks to APISCRIPTS_GETLINEAGEODBS
-        .unique { meta, odb, ref ->
+        .map { _id, _meta, odb, ref_meta, ref -> [ ref_meta, odb, ref ] }  // meta == ref_meta thanks to APISCRIPTS_GETLINEAGEODBS
+        .unique { meta, odb, _ref ->
             [ meta, odb ]
         } // Make unique by meta.id and odb[0] to avoid duplicate entries caused by multiple entries in the input samplesheet
         .multiMap { meta, odb, ref ->
@@ -74,5 +74,6 @@ workflow ODBSEARCH_BUSCO_RESTRUCTURE {
     odb_csv             = APISCRIPTS_GETLINEAGEODBS.out.csv
     busco_full_table    = BUSCO_BUSCO.out.full_table
     busco_output        = BUSCO_BUSCO.out.busco_dir
+    short_summaries     = BUSCO_BUSCO.out.short_summaries_txt
     restructured_output = RESTRUCTUREBUSCODIR.out.clean_busco_dir
 }

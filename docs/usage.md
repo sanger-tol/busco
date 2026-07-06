@@ -4,29 +4,37 @@
 
 ## Introduction
 
-<!-- TODO nf-core: Add documentation about anything specific to running your pipeline. For general topics, please point to (and add to) the main nf-core website. -->
+This pipeline runs BUSCO on one or many assemblies, with lineage selection driven by:
+
+- `mode` (`basal`, `latest`, `ancestral`; can be comma-separated)
+- `lineage` (explicit extra lineage(s), comma-separated)
+- `taxid` (required for `latest` and `ancestral`)
+- `odb_versions` (one or more ODB releases)
+
+For each selected lineage and assembly, BUSCO is run in `genome` mode.
 
 ## Samplesheet input
 
-You will need to create a samplesheet with information about the samples you would like to analyse before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 4 columns, and a header row as shown in the examples below.
+You will need to create a samplesheet with information about the samples you would like to analyse before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 5 columns, and a header row as shown in the examples below.
 
 ```bash
 --input '[path to samplesheet file]'
 ```
 
 ```csv title="samplesheet.csv"
-fasta,taxid,lineage,outdir
-https://tolit.cog.sanger.ac.uk/test-data/Meles_meles/assembly/release/mMelMel3.1_paternal_haplotype/GCA_922984935.2.subset.phiXspike.fasta.gz,9662,mammalia,Meles_meles.GCA_922984935.2.subset.phiXspike
-https://tolit.cog.sanger.ac.uk/test-data/Laetiporus_sulphureus/assembly/release/gfLaeSulp1.1/insdc/GCA_927399515.1.fasta.gz,5630,fungi,Laetiporus_sulphureus.GCA_927399515.1
+fasta,taxid,mode,lineage,outdir
+https://tolit.cog.sanger.ac.uk/test-data/Meles_meles/assembly/release/mMelMel3.1_paternal_haplotype/GCA_922984935.2.subset.phiXspike.fasta.gz,,,mammalia,Meles_meles.GCA_922984935.2.subset.phiXspike
+https://tolit.cog.sanger.ac.uk/test-data/Laetiporus_sulphureus/assembly/release/gfLaeSulp1.1/insdc/GCA_927399515.1.fasta.gz,5630,ancestral,,Laetiporus_sulphureus.GCA_927399515.1
+https://tolit.cog.sanger.ac.uk/test-data/Ceramica_pisi/assembly/release/ilCerPisi1.1/insdc/GCA_963859965.1.fasta.gz,988087,latest,,Ceramica_pisi.GCA_963859965.1
 ```
 
-| Column    | Description                                                                                                         |
-| --------- | ------------------------------------------------------------------------------------------------------------------- |
-| `fasta`   | Path to the FASTA file for the sample. This is the input sequence data for the pipeline.                            |
-| `taxid`   | Taxonomic ID for the sample. This is used to identify the lineage for the sample in "ancestral" and "latest" modes. |
-| `mode`    | Automated selection of lineages. Options are "basal", "ancestral", and "latest". This is an optional field.         |
-| `lineage` | A specific lineage, corresponding to an ODB to be run on the sample. This is an optional field.                     |
-| `outdir`  | Output directory for the results. This is where the results will be saved inside the `params.outdir` .              |
+| Column    | Description                                                                                                                          |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `fasta`   | Required. Assembly FASTA path or URL (`.fa`/`.fasta`, optionally `.gz`).                                                             |
+| `taxid`   | NCBI taxid for this assembly. Required when this row uses mode `latest` or `ancestral`. Defaults to global `--taxid` if empty.       |
+| `mode`    | Lineage selection mode(s) for this assembly: `basal`, `latest`, `ancestral` (comma-separated). Defaults to global `--mode` if empty. |
+| `lineage` | Additional explicit lineage name(s) to add (comma-separated). Defaults to global `--lineage` if empty.                               |
+| `outdir`  | Output directory/subdirectory for this assembly. Relative values are created under global `--outdir`.                                |
 
 An [example samplesheet](../assets/samplesheet.csv) has been provided with the pipeline.
 
@@ -34,63 +42,57 @@ An [example samplesheet](../assets/samplesheet.csv) has been provided with the p
 
 ### mode
 
-`params.mode` is an argument that specifies how the `api_scripts/get_lineage_odbs` process should best handle grabbing lineage ODBs for the sample.
+`params.mode` controls how the pipeline selects lineage ODBs for each sample.
 
-By default this is `""` and will rely only on the lineages specified in the `lineage` parameter.
+By default this is `""` and the pipeline relies only on lineages specified via `lineage` (global `--lineage` or per-row samplesheet value).
 
-`basal` will cause the process to only use the maximmum list of `[\'eukaryota\', \'bacteria\', \'archaea\']`. This is further modifiable by adding the `--basal_lineages {lineage}` argument to the module.config. This allows the end user to specify their own desired basal lineages used across all pipeline runs.
+- `basal` selects the basal lineage set (`eukaryota`, `bacteria`, `archaea` by default).
+- `latest` selects the most specific mapped lineage in the taxonomic path for the provided taxid.
+- `ancestral` selects all mapped ancestral lineages for the provided taxid.
 
-`latest` will cause the script to select the most recent ODB associated with it's ancestral lineages. For example if the ancestral lineage list is `[\'eukaryota\', \'metazoa\', \'insecta\', \'hymentoptera\']`, `latest` will select the most recent ODB of `hymentoptera`.
+> [!IMPORTANT]
+> `latest` and `ancestral` cannot be used together for the same sample.
 
-`ancestral` will cause the script to return the whole list of ancestral lineages for the input taxid, given via `params.taxid` or samplesheet field.
-
-All the of the above modes are futher effected by the `params.odb_versions` argument.
+`taxid`, `mode`, and `lineage` can be set globally or per-row in the samplesheet. Per-row values take precedence.
 
 ### odb_versions
 
-As of pipeline version `0.3.0`, there are three odb versions available for use in busco: `odb10`, `odb12`, and `odb12.2`. Entering these items as a csv list at the command line will multiple the number of odb results found by the `api_scripts/get_lineage_odbs` process.
+As of pipeline version `0.3.0`, the available ODB versions are `odb10`, `odb12`, and `odb12.2`.
+Provide them as a CSV list (for example: `--odb_versions odb10,odb12`).
 
-For example:
+Selections are computed independently for each ODB version, so adding versions multiplies the number of BUSCO runs.
 
-The following command will run the pipeline with `odb10` and `odb12` versions, using the `basal` mode will result in (by default) 6 busco runs:
-`--mode basal --odb_versions odb10,odb12`
-
+For example, the following command will run the pipeline with `odb10` and `odb12` versions in `basal` mode, resulting in (by default) 6 busco runs:
+`--mode basal --odb_versions odb10,odb12`. \
 Likewise, a taxid with 8 ancestral lineages using `--odb_versions odb10,odb12,odb12.2` will result in 24 busco runs.
 
 ### mapping_directory
 
-ODB mapping files are provided by the [BUSCO](https://busco.ezlab.org/) project at the `busco-data.ezlab.org` data repo:
+Mapping files must follow the naming convention `<odb_version>_mapping.txt` (for example: `odb12_mapping.txt`) and be located in `--mapping_directory`.
+A default mapping directory is provided in `modules/sanger-tol/apiscripts/getlineageodbs/resources/busco_mapping_files`.
 
-ODB files must be the merged collection of eukaryota, bacteria and archaea. For example:
-
-To make the `odb10` merged mapping file, the below files must be merged into a single file such as `mapping_files/odb10_mapping_file.txt`:
+The pipeline ships mapping files made by concatenating the eukaryota, bacteria, and archaea,
+ODB mapping files provided by the [BUSCO](https://busco.ezlab.org/) project at the `busco-data.ezlab.org` data repository. \
+For instance, to make the `odb10` merged mapping file, the below files were merged into `odb10_mapping.txt`:
 
 - https://busco-data.s3.amazonaws.com/placement_files/mapping_taxids-busco_dataset_name.archaea_odb10.2019-12-16.txt.tar.gz"
 - https://busco-data.s3.amazonaws.com/placement_files/mapping_taxids-busco_dataset_name.bacteria_odb10.2019-12-16.txt.tar.gz"
 - https://busco-data.s3.amazonaws.com/placement_files/mapping_taxids-busco_dataset_name.eukaryota_odb10.2019-12-16.txt.tar.gz"
 
-To make the `odb12` merged mapping file, the below files must be merged into a single file such as `mapping_files/odb12_mapping_file.txt`:
-
-- https://busco-data.s3.amazonaws.com/placement_files/mapping_taxids-busco_dataset_name.archaea_odb12.2024-11-15.txt.tar.gz"
-- https://busco-data.s3.amazonaws.com/placement_files/mapping_taxids-busco_dataset_name.bacteria_odb12.2024-11-15.txt.tar.gz"
-- https://busco-data.s3.amazonaws.com/placement_files/mapping_taxids-busco_dataset_name.eukaryota_odb12.2024-11-15.txt.tar.gz"
-
-However, it should be noted that the end user can use any combination of mapping files they wish, as long as they are aware this can change the results of the odb search performed in the pipeline.
-
-## BEYOND THIS POINT IS NOT COMPLETE
+However, it should be noted that the end user can use any mapping file they wish, as long as they are aware this can change the results of the odb search performed in the pipeline.
 
 ## Running the pipeline
 
 This pipeline has been designed to work via the cli or via samplesheet. The typical command for running the pipeline is as follows:
 
 ```bash
-nextflow run sanger-tol/busco --input ./samplesheet.csv --outdir ./results  -profile docker
+nextflow run sanger-tol/busco --input ./samplesheet.csv --odb_versions odb12 --outdir ./results  -profile docker
 ```
 
 or
 
 ```bash
-nextflow run sanger-tol/busco --fasta {FASTA} --mode {ancestral,latest,basal} --lineage {extra lineages} --taxid {NCBI taxid} --outdir ./results -profile docker
+nextflow run sanger-tol/busco --fasta {FASTA} --mode {ancestral,latest,basal} --lineage {extra lineages} --taxid {NCBI taxid} --odb_versions odb10 --outdir ./results -profile docker
 ```
 
 This will launch the pipeline with the `docker` configuration profile. See below for more information about profiles.
@@ -120,20 +122,20 @@ nextflow run sanger-tol/busco -profile docker -params-file params.yaml
 with:
 
 ```yaml title="params.yaml"
-input: './samplesheet.csv'
-outdir: './results/'
-<...>
+input: "./samplesheet.csv"
+odb_versions: "odb12"
+outdir: "./results/"
 ```
 
 or
 
 ```yaml title="params.yaml"
-fasta: 'assembly.fasta'
+fasta: "assembly.fasta.gz"
 taxid: 10101
-lineage: 'diptera'
-mode: 'ancestral'
-outdir: './results/'
-<...>
+lineage: "diptera"
+mode: "ancestral"
+odb_versions: "odb12.2"
+outdir: "./results/"
 ```
 
 You can also generate such `YAML`/`JSON` files via [nf-core/launch](https://nf-co.re/launch).
