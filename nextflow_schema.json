@@ -10,8 +10,16 @@
             "type": "object",
             "fa_icon": "fas fa-terminal",
             "description": "Define where the pipeline should find input data and save output data.",
-            "required": ["input", "outdir"],
+            "required": ["outdir"],
             "properties": {
+                "fasta": {
+                    "type": "string",
+                    "format": "file-path",
+                    "exists": true,
+                    "description": "Path/URL to one assembly FASTA file to analyse.",
+                    "help_text": "Supports .fa/.fasta and .fa.gz/.fasta.gz. Use this for single-assembly runs instead of --input.",
+                    "fa_icon": "fas fa-dna"
+                },
                 "input": {
                     "type": "string",
                     "format": "file-path",
@@ -19,9 +27,49 @@
                     "schema": "assets/schema_input.json",
                     "mimetype": "text/csv",
                     "pattern": "^\\S+\\.csv$",
-                    "description": "Path to comma-separated file containing information about the samples in the experiment.",
-                    "help_text": "You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row.",
+                    "description": "Path to a CSV samplesheet describing one or more assemblies.",
+                    "help_text": "Expected header is fasta,taxid,mode,lineage,outdir. Row-level values override global --taxid/--mode/--lineage for that assembly.",
                     "fa_icon": "fas fa-file-csv"
+                },
+                "taxid": {
+                    "type": "number",
+                    "description": "Global NCBI taxid for lineage discovery.",
+                    "help_text": "Used when samplesheet taxid is not provided. Required for modes ancestral/latest.",
+                    "fa_icon": "fas fa-bone"
+                },
+                "lineage": {
+                    "type": "string",
+                    "description": "Global explicit BUSCO lineage(s) to add.",
+                    "help_text": "Comma-separated lineage names (e.g. mammalia,insecta). Used when samplesheet lineage is empty.",
+                    "fa_icon": "fas fa-bone"
+                },
+                "mapping_directory": {
+                    "type": "string",
+                    "format": "directory-path",
+                    "exists": true,
+                    "description": "Directory containing BUSCO taxid mapping files.",
+                    "help_text": "Files must be named <odb_version>_mapping.txt, for example odb12_mapping.txt.",
+                    "fa_icon": "fas fa-folder-open"
+                },
+                "busco_db": {
+                    "type": "string",
+                    "format": "directory-path",
+                    "exists": true,
+                    "description": "Local BUSCO database directory (optional).",
+                    "help_text": "If set, selected lineages are validated locally and BUSCO runs in offline mode.",
+                    "fa_icon": "fas fa-folder-open"
+                },
+                "mode": {
+                    "type": "string",
+                    "description": "Global lineage discovery mode(s): basal, latest, ancestral.",
+                    "help_text": "Comma-separated values allowed. latest and ancestral require taxid and cannot be combined together.",
+                    "fa_icon": "fas fa-folder-open"
+                },
+                "odb_versions": {
+                    "type": "string",
+                    "description": "ODB version(s) to use.",
+                    "help_text": "Comma-separated values (odb10,odb12,odb12.2). Each listed version requires a corresponding mapping file in mapping_directory.",
+                    "fa_icon": "fas fa-folder-open"
                 },
                 "outdir": {
                     "type": "string",
@@ -41,7 +89,30 @@
                     "description": "MultiQC report title. Printed as page header, used for filename if not otherwise specified.",
                     "fa_icon": "fas fa-file-signature"
                 }
-            }
+            },
+            "oneOf": [
+                {
+                    "required": ["input", "odb_versions", "mapping_directory"]
+                },
+                {
+                    "required": ["fasta", "odb_versions", "mapping_directory"]
+                }
+            ]
+        },
+        "execution": {
+            "title": "Execution",
+            "type": "object",
+            "description": "Control the execution of the pipeline.",
+            "default": "",
+            "properties": {
+                "use_work_dir_as_temp": {
+                    "type": "boolean",
+                    "description": "Use Nextflow work directory for temporary files where supported.",
+                    "fa_icon": "fas fa-arrow-circle-down",
+                    "hidden": false
+                }
+            },
+            "fa_icon": "fas fa-running"
         },
         "institutional_config_options": {
             "title": "Institutional config options",
@@ -197,6 +268,9 @@
     "allOf": [
         {
             "$ref": "#/$defs/input_output_options"
+        },
+        {
+            "$ref": "#/$defs/execution"
         },
         {
             "$ref": "#/$defs/institutional_config_options"

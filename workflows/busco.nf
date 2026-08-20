@@ -3,12 +3,13 @@
     IMPORT MODULES / SUBWORKFLOWS / FUNCTIONS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-include { FASTQC                 } from '../modules/nf-core/fastqc/main'
-include { MULTIQC                } from '../modules/nf-core/multiqc/main'
-include { paramsSummaryMap       } from 'plugin/nf-schema'
-include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
-include { softwareVersionsToYAML } from '../subworkflows/nf-core/utils_nfcore_pipeline'
-include { methodsDescriptionText } from '../subworkflows/local/utils_nfcore_busco_pipeline'
+include { GUNZIP                        } from '../modules/nf-core/gunzip/main'
+include { ODBSEARCH_BUSCO_RESTRUCTURE   } from '../subworkflows/sanger-tol/odbsearch_busco_restructure/main'
+include { MULTIQC                       } from '../modules/nf-core/multiqc/main'
+include { paramsSummaryMap              } from 'plugin/nf-schema'
+include { paramsSummaryMultiqc          } from '../subworkflows/nf-core/utils_nfcore_pipeline'
+include { softwareVersionsToYAML        } from '../subworkflows/nf-core/utils_nfcore_pipeline'
+include { methodsDescriptionText        } from '../subworkflows/local/utils_nfcore_busco_pipeline'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -19,21 +20,75 @@ include { methodsDescriptionText } from '../subworkflows/local/utils_nfcore_busc
 workflow BUSCO {
 
     take:
-    ch_samplesheet // channel: samplesheet read in from --input
+    ch_fastas // channel: all fasta files to process
+
+
     multiqc_config
     multiqc_logo
     multiqc_methods_description
     outdir
 
     main:
-
-    def ch_versions = channel.empty()
+    def ch_versions      = channel.empty()
     def ch_multiqc_files = channel.empty()
+
+
     //
-    // MODULE: Run FastQC
+    // LOGIC: Identify the compressed files
     //
-    FASTQC(ch_samplesheet)
-    ch_multiqc_files = ch_multiqc_files.mix(FASTQC.out.zip.map{ _meta, file -> file })
+    ch_genomes_for_gunzip = ch_fastas
+        .map { fasta, taxid, mode, lineage, sample_outdir -> tuple(
+            [
+                id: fasta.baseName,
+                taxid: taxid ?: params.taxid,
+                mode: mode ?: params.mode,
+                lineage: lineage ?: params.lineage ?: [],
+                outdir: sample_outdir,
+            ],
+            fasta
+        ) }
+        .branch { _meta, fasta ->
+            gunzip: fasta.name.endsWith( ".gz" )
+            skip: true
+        }
+
+
+    //
+    // MODULE: Decompress compressed FASTA files
+    //
+    GUNZIP ( ch_genomes_for_gunzip.gunzip )
+
+
+    //
+    // LOGIC: Extract the genome size for decision making downstream
+    //
+    ch_reference = GUNZIP.out.gunzip
+        // To have the name without the .fa/.fasta extension
+        .map { meta, fa -> [ meta + [id: fa.baseName], fa ] }
+        // These are already named as expected
+        .mix ( ch_genomes_for_gunzip.skip )
+        .map { meta, fa -> [ meta + [genome_size: fa.size()], fa] }
+
+    ch_mapping_dir = params.mapping_directory
+        ? channel.value( file(params.mapping_directory, type: "dir") )
+        : channel.value( [] )
+
+    ch_busco_db = params.busco_db
+        ? channel.value( file(params.busco_db, type: "dir") )
+        : channel.value( [] )
+
+
+    //
+    // SUBWORKFLOW: SEARCH FOR BUSCO ODBS, RUN BUSCO AND RESTRUCTURE THE OUTPUT DIRECTORIES
+    //
+    ODBSEARCH_BUSCO_RESTRUCTURE (
+        ch_reference,
+        ch_busco_db,
+        ch_mapping_dir,
+        true,
+    )
+
+    ch_multiqc_files = ch_multiqc_files.mix( ODBSEARCH_BUSCO_RESTRUCTURE.out.short_summaries.map { _meta, file -> file } )
 
     //
     // Collate and save software versions
