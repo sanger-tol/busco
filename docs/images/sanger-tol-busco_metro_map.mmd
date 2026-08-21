@@ -1,10 +1,13 @@
 %%metro title: BUSCO pipeline
 %%metro style: dark
-%%metro line_order: span
 %%metro line: main | BUSCO| #2db572
-%%metro line: qc | Quality control | #0570b0
+%%metro line: qc | Stats aggregation | #0570b0
 %%metro file: input| Fasta
 %%metro file: report_out | HTML
+%%metro files: sequences_tar | Fasta (TAR)
+%%metro files: busco_tsv | TSV
+%%metro file: busco_summ_json | JSON
+%%metro file: busco_summ_txt | TXT
 
 graph LR
     subgraph params_check [Prepare genome]
@@ -23,10 +26,12 @@ graph LR
     subgraph busco [BUSCO]
         get_odb([Get ODB lineages])
         busco_busco([BUSCO])
-        restructurebuscodir([Restructure outputs])
 
         get_odb -->|main,qc| busco_busco
-        busco_busco -->|main| restructurebuscodir
+        busco_busco -->|main| sequences_tar
+        busco_busco -->|main| busco_tsv
+        busco_busco -->|main| busco_summ_json
+        busco_busco -->|main| busco_summ_txt
     end
 
     subgraph reporting [Reporting]

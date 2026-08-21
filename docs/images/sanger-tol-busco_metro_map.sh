@@ -5,8 +5,8 @@ METROMAP=metro_map
 LOGO=logo
 render () {
   nf-metro render "${NAME}_${METROMAP}.mmd" -o "${NAME}_${METROMAP}_$1.svg" --theme "$2" --logo "${NAME}_${LOGO}_$1.png" --no-chrome-css
-  nf-metro cairosvg "${NAME}_${METROMAP}_$1.svg" -o "${NAME}_${METROMAP}_$1.png"
-  nf-metro nf-metro render "${NAME}_${METROMAP}.mmd" -o "${NAME}_${METROMAP}_$1.svg" --theme "$2" --logo "${NAME}_${LOGO}_$1.png"
+  cairosvg "${NAME}_${METROMAP}_$1.svg" -o "${NAME}_${METROMAP}_$1.png"
+  nf-metro render "${NAME}_${METROMAP}.mmd" -o "${NAME}_${METROMAP}_$1.svg" --theme "$2" --logo "${NAME}_${LOGO}_$1.png"
 }
 render dark nfcore
 render light light
