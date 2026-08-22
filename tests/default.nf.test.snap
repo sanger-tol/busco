@@ -16,7 +16,7 @@
                     "restructurebuscodir": 1.0
                 },
                 "Workflow": {
-                    "sanger-tol/busco": "v0.3.1"
+                    "sanger-tol/busco": "v0.3.2"
                 }
             },
             [
