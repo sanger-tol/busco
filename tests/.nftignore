@@ -1,5 +1,4 @@
 multiqc_report.html
-fastqc/*_fastqc.{html,zip}
 pipeline_info/*.{html,json,txt,yml}
 */*_odb*/*.short_summary.{json,txt}
 */*_odb*/*.tar.gz
