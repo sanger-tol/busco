@@ -7,27 +7,32 @@
     "items": {
         "type": "object",
         "properties": {
-            "sample": {
+            "fasta": {
+                "type": "string",
+                "format": "file-path",
+                "pattern": "^\\S+\\.f(ast)?a(\\.gz)?$",
+                "description": "Assembly FASTA path or URL (.fa/.fasta, optionally .gz).",
+                "errorMessage": "Assembly path is required and must not contain whitespace."
+            },
+            "taxid": {
+                "type": "integer",
+                "description": "NCBI taxid for this assembly. Required when this row uses mode latest or ancestral. Defaults to global --taxid if empty."
+            },
+            "mode": {
+                "type": "string",
+                "description": "Lineage selection mode(s) for this assembly: basal, latest, ancestral (comma-separated). Defaults to global --mode if empty."
+            },
+            "lineage": {
+                "type": "string",
+                "description": "Additional explicit lineage name(s) to add (comma-separated). Defaults to global --lineage if empty."
+            },
+            "outdir": {
                 "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "Sample name must be provided and cannot contain spaces",
-                "meta": ["id"]
-            },
-            "fastq_1": {
-                "type": "string",
-                "format": "file-path",
-                "exists": true,
-                "pattern": "^([\\S\\s]*\\/)?[^\\s\\/]+\\.f(ast)?q\\.gz$",
-                "errorMessage": "FastQ file for reads 1 must be provided, cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'"
-            },
-            "fastq_2": {
-                "type": "string",
-                "format": "file-path",
-                "exists": true,
-                "pattern": "^([\\S\\s]*\\/)?[^\\s\\/]+\\.f(ast)?q\\.gz$",
-                "errorMessage": "FastQ file for reads 2 cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'"
+                "description": "Output directory/subdirectory for this assembly.",
+                "errorMessage": "Output directory must not contain whitespace. Relative values are created under global --outdir."
             }
         },
-        "required": ["sample", "fastq_1"]
+        "required": ["fasta"]
     }
 }
