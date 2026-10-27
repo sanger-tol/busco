@@ -1,3 +1,4 @@
+.DS_Store
 multiqc_report.html
 pipeline_info/*.{html,json,txt,yml}
 */*_odb*/*.short_summary.{json,txt}
