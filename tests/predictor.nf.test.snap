@@ -40,7 +40,7 @@
                 "GCA_963859965.1.lepidoptera_odb12.short_summary.tsv:md5,97bf63d6cb79a5255dfd8974aecf406a"
             ]
         ],
-        "timestamp": "2026-11-10T16:39:39.766458857",
+        "timestamp": "2026-11-10T20:31:03.707750329",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.0"

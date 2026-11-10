@@ -16,7 +16,7 @@ nextflow_pipeline {
                 outdir               = "$outputDir"
                 mapping_directory    = "${projectDir}/modules/sanger-tol/apiscripts/getlineageodbs/resources/busco_mapping_files"
                 busco_db             = "${launchDir}/genomenote.GCA_963859965.1.2025-12-08"
-                busco_gene_predictor = 'miniprot'
+                busco_gene_predictor = 'metaeuk'
             }
         }
 
