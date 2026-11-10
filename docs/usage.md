@@ -13,6 +13,10 @@ This pipeline runs BUSCO on one or many assemblies, with lineage selection drive
 
 For each selected lineage and assembly, BUSCO is run in `genome` mode.
 
+The default value has changed across Busco versions (and may change in the future).
+The pipeline exposes the `--busco_gene_predictor` option to force a specific method to be used.
+Otherwise, the pipeline will default to Busco's own default (currently Miniprot for eukaryotes or prodigal for bacteria or archaea).
+
 ## Samplesheet input
 
 You will need to create a samplesheet with information about the samples you would like to analyse before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 5 columns, and a header row as shown in the examples below.

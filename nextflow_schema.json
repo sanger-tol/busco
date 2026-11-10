@@ -65,7 +65,13 @@
                     "help_text": "Comma-separated values allowed. latest and ancestral require taxid and cannot be combined together.",
                     "fa_icon": "fas fa-folder-open"
                 },
-                "odb_versions": {
+                "busco_gene_predictor": {
+                    "type": "string",
+                    "enum": ["miniprot", "metaeuk", "augustus"],
+                    "description": "Name of the gene predictor to run BUSCO on. By default, the pipeline will automatically select miniprot for gene prediction.",
+                    "fa_icon": "fas fa-bone"
+                },
+		"odb_versions": {
                     "type": "string",
                     "description": "ODB version(s) to use.",
                     "help_text": "Comma-separated values (odb10,odb12,odb12.2). Each listed version requires a corresponding mapping file in mapping_directory.",
