@@ -35,12 +35,12 @@
                 "pipeline_info/busco_software_mqc_versions.yml"
             ],
             [
-                "GCA_963859965.1.lepidoptera_odb12.full_table.tsv.gz:md5,d3d2bfae2b4cbad68136ae1ba53250e3",
+                "GCA_963859965.1.lepidoptera_odb12.full_table.tsv.gz:md5,defe99eebf3c50555817bf0148906467",
                 "GCA_963859965.1.lepidoptera_odb12.missing_busco_list.tsv.gz:md5,4fd74c85d50e315601ee9a3fa25f2b26",
-                "GCA_963859965.1.lepidoptera_odb12.short_summary.tsv:md5,97bf63d6cb79a5255dfd8974aecf406a"
+                "GCA_963859965.1.lepidoptera_odb12.short_summary.tsv:md5,7b96a07d83d720fb7c61a0d468c3afb2"
             ]
         ],
-        "timestamp": "2026-11-10T20:31:03.707750329",
+        "timestamp": "2026-11-23T13:53:29.730490125",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.0"
