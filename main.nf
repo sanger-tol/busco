@@ -13,7 +13,7 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { BUSCO  } from './workflows/busco'
+include { BUSCO                   } from './workflows/busco'
 include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_busco_pipeline'
 include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_busco_pipeline'
 /*

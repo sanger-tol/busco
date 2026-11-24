@@ -3,6 +3,14 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [[0.3.5](https://github.com/sanger-tol/busco/releases/tag/0.3.5)] – Lincolnshire (patch 5) – [2026-11-23]
+
+### Enhancements & fixes
+
+- Bug introduced in `0.3.4` that ignored the `modules.config` defined arguments for `busco_busco`
+- NF-core template upgrade to 4.2.2 which fixes an issue with singularity execution on GitHub
+- Updated tests to use the `profile` syntax rather than the `config` syntax
+
 ## [[0.3.4](https://github.com/sanger-tol/busco/releases/tag/0.3.4)] – Lincolnshire (patch 4) – [2026-11-10]
 
 ### Enhancements & fixes
