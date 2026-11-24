@@ -3,10 +3,9 @@ nextflow_pipeline {
     name "Test pipeline"
     script "../main.nf"
     tag "pipeline"
+    profile "test"
 
     test("-profile test") {
-        config "../conf/test.config"
-
         setup {
             curlAndExtract("https://tolit.cog.sanger.ac.uk/test-data/resources/busco/genomenote.GCA_963859965.1.2025-12-08.tar.gz", "${launchDir}/")
         }
